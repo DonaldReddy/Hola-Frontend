@@ -2,20 +2,28 @@
 
 import Link from "next/link";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import axios from "axios";
 import useScreenWidth from "@/customHooks/useScreenWidth";
 // import { useDispatch } from "react-redux";
-import { changeUser } from "@/redux/slices/userSlice";
-import { AppDispatch, useAppSelector,useAppDispatch } from "@/redux/store";
+import { changeUser, signInUser } from "@/redux/slices/userSlice";
+import { useAppSelector, useAppDispatch } from "@/redux/store";
 
 function page() {
 	const [signInInfo, setSignInInfo] = useState({ userName: "", password: "" });
 	const screenWidth = useScreenWidth();
-	const user = useAppSelector((state) => state.userReducer.user);
 	const dispatch = useAppDispatch();
+	const user = useAppSelector((state) => state.userReducer.user);
 
-	function handleSubmit(e: FormEvent<HTMLFormElement>) {
+	async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+		// try {
 		e.preventDefault();
-		dispatch(changeUser(signInInfo.userName));
+		// 	const response = await axios.post("http:localhost:3000/user/sign-in", {
+		// 		signInInfo,
+		// 	});
+		// 	if (!response.data.status) throw new Error(response.data.error);
+		// 	dispatch(changeUser(signInInfo.userName));
+		// } catch (error) {}
+		dispatch(signInUser(signInInfo));
 	}
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {

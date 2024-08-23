@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type InitialState = {
   user: String;
@@ -7,6 +7,19 @@ type InitialState = {
 const initialState: InitialState = {
   user: 'leo',
 };
+
+
+export const signInUser = createAsyncThunk<string, { userName: string, password: string }, { rejectValue: string }>("user/signIn", async (signInInfo, thunkAPI) => {
+  try {
+    await new Promise((resolve, reject) => {
+      setTimeout(() => { reject(new Error("just error")) }, 2000)
+    });
+    return signInInfo.userName
+  } catch (error) {
+    return thunkAPI.rejectWithValue("rejected")
+  }
+});
+
 
 export const userSlice = createSlice({
   name: 'user',
@@ -18,6 +31,14 @@ export const userSlice = createSlice({
       };
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(signInUser.fulfilled, (state, action: PayloadAction<string>) => {
+      state.user = action.payload;
+    });
+    builder.addCase(signInUser.rejected, (state, action) => {
+      state.user = ""
+    })
+  }
 });
 
 export default userSlice.reducer;
