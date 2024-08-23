@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.loader {
+  height: 100svh;
+  width: 100svh;
+  scale: 4;
+  overflow: hidden;
+  background: rgb(0, 0, 0);
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  animation: scale0 0.8s ease forwards;
+}
+
+@keyframes scale0 {
+  100% {
+    scale: 0;
+  }
+}

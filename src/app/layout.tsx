@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import ReduxProvider from "@/redux/ReduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: {
-		default: "default",
-		template: "%s suffix",
-	},
+	title: "Hola Messenger",
+	icons: "/images/logo.svg",
 };
 
 export default function RootLayout({
@@ -18,7 +17,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={inter.className}>{children}</body>
+			<body
+				className={inter.className + " overflow-hidden bg-black text-slate-50"}
+			>
+				<ReduxProvider>{children}</ReduxProvider>
+			</body>
 		</html>
 	);
 }
