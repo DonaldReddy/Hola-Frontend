@@ -5,16 +5,29 @@ type InitialState = {
 };
 
 const initialState: InitialState = {
-  user: 'leo',
+  user: '',
 };
 
 
 export const signInUser = createAsyncThunk<string, { userName: string, password: string }, { rejectValue: string }>("user/signIn", async (signInInfo, thunkAPI) => {
   try {
-    await new Promise((resolve, reject) => {
-      setTimeout(() => { reject(new Error("just error")) }, 2000)
-    });
     return signInInfo.userName
+  } catch (error) {
+    return thunkAPI.rejectWithValue("rejected")
+  }
+});
+
+export const signUpUser = createAsyncThunk<string, { name: string, userName: string, password: string }, { rejectValue: string }>("user/signUp", async (signUpInfo, thunkAPI) => {
+  try {
+    return signUpInfo.userName
+  } catch (error) {
+    return thunkAPI.rejectWithValue("rejected")
+  }
+});
+
+export const signOutUser = createAsyncThunk<string, { userName: string }, { rejectValue: string }>("user/signOut", async (signOutInfo, thunkAPI) => {
+  try {
+    return ""
   } catch (error) {
     return thunkAPI.rejectWithValue("rejected")
   }
@@ -36,6 +49,18 @@ export const userSlice = createSlice({
       state.user = action.payload;
     });
     builder.addCase(signInUser.rejected, (state, action) => {
+      state.user = ""
+    })
+    builder.addCase(signUpUser.fulfilled, (state, action: PayloadAction<string>) => {
+      state.user = action.payload;
+    });
+    builder.addCase(signUpUser.rejected, (state, action) => {
+      state.user = ""
+    })
+    builder.addCase(signOutUser.fulfilled, (state, action: PayloadAction<string>) => {
+      state.user = "";
+    });
+    builder.addCase(signOutUser.rejected, (state, action) => {
       state.user = ""
     })
   }

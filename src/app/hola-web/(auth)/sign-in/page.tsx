@@ -2,27 +2,24 @@
 
 import Link from "next/link";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import axios from "axios";
 import useScreenWidth from "@/customHooks/useScreenWidth";
-// import { useDispatch } from "react-redux";
-import { changeUser, signInUser } from "@/redux/slices/userSlice";
+import { signInUser } from "@/redux/slices/userSlice";
 import { useAppSelector, useAppDispatch } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 function page() {
 	const [signInInfo, setSignInInfo] = useState({ userName: "", password: "" });
 	const screenWidth = useScreenWidth();
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.userReducer.user);
+	const router = useRouter();
 
-	async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-		// try {
+	useEffect(() => {
+		if (user) router.replace("/hola-web/messenger");
+	}, [user]);
+
+	function handleSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		// 	const response = await axios.post("http:localhost:3000/user/sign-in", {
-		// 		signInInfo,
-		// 	});
-		// 	if (!response.data.status) throw new Error(response.data.error);
-		// 	dispatch(changeUser(signInInfo.userName));
-		// } catch (error) {}
 		dispatch(signInUser(signInInfo));
 	}
 
@@ -35,7 +32,7 @@ function page() {
 			{screenWidth >= 768 && (
 				<div id="left" className="w-full md:w-[55%] text-lg md:text-2xl ">
 					<div className="flex flex-col items-center gap-5">
-						<h1>Welcome to {user}</h1>
+						<h1>Welcome to </h1>
 						<img
 							src="/images/logo.svg"
 							className="w-[100px] md:w-[300px] lg:w-[400px]"
