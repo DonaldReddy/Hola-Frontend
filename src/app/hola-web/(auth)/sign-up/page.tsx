@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useScreenWidth from "@/customHooks/useScreenWidth";
 import { signUpUser } from "@/redux/slices/userSlice";
 import { useAppSelector, useAppDispatch } from "@/redux/store";
 import { useRouter } from "next/navigation";
 
-function page() {
+function Page() {
 	const [signUpInfo, setSignUpInfo] = useState({
 		userName: "",
 		password: "",
@@ -20,7 +21,7 @@ function page() {
 
 	useEffect(() => {
 		if (user) router.replace("/hola-web/messenger");
-	}, [user]);
+	}, [user, router]);
 
 	function handleSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -37,9 +38,14 @@ function page() {
 				<div id="left" className="w-full md:w-[55%] text-lg md:text-2xl ">
 					<div className="flex flex-col items-center gap-5">
 						<h1>Welcome to</h1>
-						<img
+						<Image
 							src="/images/logo.svg"
 							className="w-[100px] md:w-[300px] lg:w-[400px]"
+							alt="logo"
+							width={100}
+							height={100}
+							priority={true}
+							sizes="(max-width: 768px) 100px, (max-width: 1200px) 300px, 400px"
 						/>
 						<h2>Sign up here and Explore</h2>
 					</div>
@@ -50,7 +56,15 @@ function page() {
 				className=" min-h-svh w-full md:w-[45%]   flex flex-col justify-evenly items-center bg-gradient-to-b from-[#430099] from-10%"
 			>
 				{screenWidth < 768 && (
-					<img src="/images/logo.svg" className="w-[100px] md:w-[500px]" />
+					<Image
+						src="/images/logo.svg"
+						className="w-[100px] md:w-[500px]"
+						alt="logo"
+						width={500}
+						height={500}
+						sizes="(max-width: 768px) 100px, 500px"
+						priority={true}
+					/>
 				)}
 
 				{screenWidth >= 768 && (
@@ -125,4 +139,4 @@ function page() {
 	);
 }
 
-export default page;
+export default Page;
