@@ -5,12 +5,14 @@ type InitialState = {
 };
 
 const initialState: InitialState = {
-  user: '',
+  user: typeof window !== "undefined" ? localStorage.getItem("user") || "" : "",
 };
+
 
 
 export const signInUser = createAsyncThunk<string, { userName: string, password: string }, { rejectValue: string }>("user/signIn", async (signInInfo, thunkAPI) => {
   try {
+    localStorage.setItem("user", signInInfo.userName)
     return signInInfo.userName
   } catch (error) {
     return thunkAPI.rejectWithValue("rejected")
@@ -19,6 +21,7 @@ export const signInUser = createAsyncThunk<string, { userName: string, password:
 
 export const signUpUser = createAsyncThunk<string, { name: string, userName: string, password: string }, { rejectValue: string }>("user/signUp", async (signUpInfo, thunkAPI) => {
   try {
+    localStorage.setItem("user", signUpInfo.userName)
     return signUpInfo.userName
   } catch (error) {
     return thunkAPI.rejectWithValue("rejected")

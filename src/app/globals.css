@@ -19,3 +19,15 @@
     scale: 0;
   }
 }
+
+
+.chat-card::-webkit-scrollbar {
+  width: 5px;
+  background: rgba(255, 255, 255, 0.253);
+  border-radius: 20px;
+}
+
+.chat-card::-webkit-scrollbar-thumb {
+  background: rgb(162, 0, 255);
+  border-radius: 20px;
+}

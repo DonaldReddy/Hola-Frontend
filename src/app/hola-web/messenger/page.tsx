@@ -1,7 +1,14 @@
 import React from "react";
+import RecentChats from "./RecentChats";
+import OpenChat from "./OpenChat";
 
-function page() {
-	return <div>page</div>;
+function Page() {
+	return (
+		<div className="flex">
+			<RecentChats />
+			<OpenChat />
+		</div>
+	);
 }
 
-export default page;
+export default Page;
