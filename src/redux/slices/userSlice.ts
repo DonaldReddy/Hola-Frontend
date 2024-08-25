@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type InitialState = {
-  user: String;
+  user: string;
 };
 
 const initialState: InitialState = {

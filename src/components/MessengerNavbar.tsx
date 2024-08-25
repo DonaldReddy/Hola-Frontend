@@ -17,32 +17,32 @@ function MessengerNavbar() {
 	}
 
 	return (
-		<div className="flex justify-between px-5 py-2 border-b border-gray-500">
+		<div className="flex justify-between px-5 py-1 border-b border-gray-500">
 			<div id="left">
 				<Image src="/images/logo.svg" alt="logo" width={70} height={70} />
 			</div>
 			{screenWidth >= 700 && (
 				<div id="right" className="flex gap-5 items-center">
 					<MdOutlineChatBubbleOutline
-						size={30}
+						size={20}
 						aria-label="Chat"
 						title="chat"
 						className=" cursor-pointer"
 					/>
 					<FaUserFriends
-						size={30}
+						size={20}
 						aria-label="Friends"
 						title="friends"
 						className=" cursor-pointer"
 					/>
 					<GoGear
-						size={30}
+						size={20}
 						aria-label="Settings"
 						title="settings"
 						className=" cursor-pointer"
 					/>
 					<IoPersonCircleSharp
-						size={30}
+						size={20}
 						aria-label="Profile"
 						title="profile"
 						className=" cursor-pointer"

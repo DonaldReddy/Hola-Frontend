@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { IoIosSearch } from "react-icons/io";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
@@ -7,6 +7,7 @@ import useScreenWidth from "@/customHooks/useScreenWidth";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { unSelectChat } from "@/redux/slices/chatSlice";
+import MessageCard from "./MessageCard";
 
 function OpenChat() {
 	const screenWidth = useScreenWidth();
@@ -16,8 +17,16 @@ function OpenChat() {
 		(state) => state.chatReducer.selectedChat,
 	);
 	const user = useAppSelector((state) => state.userReducer.user);
-
-	const conversationData = [
+	const chatContainerRef = useRef<HTMLDivElement>(null);
+	const [conversationData, setConversationData] = useState([
+		{
+			messageId: "0",
+			sender: "Luffy",
+			receiver: "Zoro",
+			message:
+				"Hey Zoro, are you ready for our next adventure?Hey Zoro, are you ready for our next adventure?Hey Zoro, are you ready for our next adventure?Hey Zoro, are you ready for our next adventure?Hey Zoro, are you ready for our next adventure?Hey Zoro, are you ready for our next adventure?Hey Zoro, are you ready for our next adventure?",
+			timestamp: "2024-08-25T09:00:00Z",
+		},
 		{
 			messageId: "1",
 			sender: "Luffy",
@@ -88,12 +97,36 @@ function OpenChat() {
 			message: "I'll be ready. Let's make this adventure one to remember.",
 			timestamp: "2024-08-25T09:45:00Z",
 		},
-	];
+	]);
 
-	useEffect(() => {}, [user]);
+	useEffect(() => {
+		if (chatContainerRef.current) {
+			chatContainerRef.current.scrollTop =
+				chatContainerRef.current.scrollHeight;
+		}
+	}, [conversationData, selectedChat]);
 
 	function handleGoBack(e: React.MouseEvent<SVGAElement>) {
 		dispatch(unSelectChat());
+	}
+
+	function handleSendMessage(e: React.KeyboardEvent<HTMLInputElement>) {
+		if (e.key === "Enter") {
+			const message = e.currentTarget.value.trim();
+			if (message.length > 0) {
+				setConversationData([
+					...conversationData,
+					{
+						messageId: conversationData.length + 1 + "",
+						sender: user,
+						receiver: "",
+						message: message,
+						timestamp: "",
+					},
+				]);
+				e.currentTarget.value = "";
+			}
+		}
 	}
 
 	if (!selectedChat.userName)
@@ -105,9 +138,9 @@ function OpenChat() {
 
 	return (
 		<div
-			className={`w-full min-h-svh lg:w-[70%] flex flex-col items-center border-l-[1px] border-[#ffffff3c]`}
+			className={`w-full h-svh lg:w-[70%] flex flex-col items-center border-l-[1px] border-[#ffffff3c] `}
 		>
-			<div className="h-15 w-full px-3 py-1 flex items-center justify-between border-[1px] border-[#ffffff2e] bg-[#42009963] gap-3">
+			<div className="h-[8%] w-full px-3 flex items-center justify-between border-[1px] border-[#ffffff2e] bg-[#42009963] gap-3">
 				{screenWidth <= 768 && <FaArrowLeftLong onClick={handleGoBack} />}
 				<div className="w-[95%] lg:w-full flex justify-between items-center">
 					<div className="flex items-center gap-2">
@@ -123,20 +156,27 @@ function OpenChat() {
 				</div>
 			</div>
 
-			<div className="max-h-[20%] w-full overflow-y-scroll chat-card bg-yellow-400">
-				{conversationData.map((msg) =>
-					user == msg.sender ? (
-						<div className="max-h-min max-w-min my-2 rounded-md bg-red-600 relative right-0">
-							{msg.message}
-						</div>
-					) : (
-						<div className="max-h-min max-w-min my-2 rounded-md bg-emerald-600 ">
-							{msg.message}
-						</div>
-					),
-				)}
+			<div
+				className="h-[80%] w-full px-2 overflow-y-scroll chat-card "
+				ref={chatContainerRef}
+			>
+				{conversationData.map((msg, idx) => (
+					<MessageCard
+						key={msg.messageId}
+						msg={msg}
+						isUser={user === msg.sender}
+					/>
+				))}
 			</div>
-			<div className="bg-[#4200996c] w-full h-[50px]"></div>
+
+			<div className="bg-[#4200996c] w-full h-[7%] flex justify-center items-center">
+				<input
+					type="text"
+					className="w-[90%] bg-transparent border-[1px] border-[#ffffff4b] px-2 py-1 rounded-md "
+					placeholder="Type a message"
+					onKeyDown={handleSendMessage}
+				/>
+			</div>
 		</div>
 	);
 }

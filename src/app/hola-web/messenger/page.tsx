@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import RecentChats from "./RecentChats";
-import OpenChat from "./OpenChat";
+import RecentChats from "@/components/RecentChats";
+import OpenChat from "../../../components/OpenChat";
 import { useAppSelector } from "@/redux/store";
 import useScreenWidth from "@/customHooks/useScreenWidth";
 
