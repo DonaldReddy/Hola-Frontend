@@ -28,6 +28,6 @@
 }
 
 .chat-card::-webkit-scrollbar-thumb {
-  background: rgb(162, 0, 255);
+  background: #430099;
   border-radius: 20px;
 }

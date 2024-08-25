@@ -1,12 +1,28 @@
-import { Metadata } from "next";
+"use client";
+import { useAppSelector } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
-
-export const generateMetadata = (): Metadata => {
-	return { title: "Hola Web" };
-};
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 function Page() {
+	const user = useAppSelector((state) => state.userReducer.user);
+	const router = useRouter();
+	const [isClient, setIsClient] = useState(false);
+
+	useEffect(() => {
+		setIsClient(true);
+		if (user) router.replace("/hola-web/messenger");
+	}, [user, router]);
+
+	if (!isClient) {
+		return (
+			<div className="min-h-svh flex justify-center items-center">
+				Loading...
+			</div>
+		);
+	}
+
 	return (
 		<div className="text-slate-50 min-h-svh flex flex-col justify-center items-center">
 			<div className="flex flex-col justify-between items-center  h-[150px] mb-6">

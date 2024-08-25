@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState, MouseEvent } from "react";
+import React, { useState } from "react";
 import { MdOutlineChatBubbleOutline } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
 import { GoGear } from "react-icons/go";
@@ -12,7 +12,7 @@ function MessengerNavbar() {
 	const screenWidth = useScreenWidth();
 	const [showMenu, setShowMenu] = useState(false);
 
-	function handleMenuToggle(e: MouseEvent<SVGElement>) {
+	function handleMenuToggle(e: React.MouseEvent<SVGElement>) {
 		setShowMenu((prevState) => !prevState);
 	}
 

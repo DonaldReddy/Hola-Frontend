@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './slices/userSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import chatReducer from './slices/chatSlice';
 
 const store = configureStore({
   reducer: {
-    userReducer
+    userReducer,
+    chatReducer
   },
   devTools: true
 });
