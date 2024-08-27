@@ -1,13 +1,9 @@
-"use client";
-import useScreenWidth from "@/customHooks/useScreenWidth";
 import Image from "next/image";
 import Link from "next/link";
 
 function Header() {
-	const screenWidth = useScreenWidth();
-
 	return (
-		<nav className="flex justify-between bg-gradient-to-t from-[#000000] from-90% to-[#7000FF] border-b border-[#ffffffa4] py-2 px-3 w-full">
+		<nav className="h-[5svh] w-full px-2 flex justify-between items-center bg-gradient-to-t from-[#000000] from-90% to-[#7000FF] border-b border-[#ffffffa4] ">
 			<div id="left" className="flex justify-center items-center">
 				<Link href="/">
 					<Image src="/images/logo.svg" alt="Logo" width={70} height={70} />
@@ -20,7 +16,6 @@ function Header() {
 				<Link href="/" className="mx-3">
 					Contact us
 				</Link>
-				{screenWidth == null ? "null" : screenWidth}
 			</div>
 		</nav>
 	);

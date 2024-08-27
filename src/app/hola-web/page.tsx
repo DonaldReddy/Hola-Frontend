@@ -1,21 +1,29 @@
 "use client";
-import { useAppSelector } from "@/redux/store";
+import { changeUser } from "@/redux/slices/userSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function Page() {
+	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.userReducer.user);
 	const router = useRouter();
 	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
 		setIsClient(true);
-		if (user) router.replace("/hola-web/messenger");
-	}, [user, router]);
+		if (typeof window !== "undefined") {
+			const userFromStorage = localStorage.getItem("user") || "";
+			dispatch(changeUser(userFromStorage));
+			if (userFromStorage) {
+				router.push("/hola-web/messenger");
+			}
+		}
+	}, []);
 
-	if (!isClient) {
+	if (!isClient || user) {
 		return (
 			<div className="min-h-svh flex justify-center items-center">
 				Loading...

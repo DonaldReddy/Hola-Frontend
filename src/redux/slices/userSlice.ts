@@ -1,17 +1,23 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
 
 type InitialState = {
   user: string;
 };
 
 const initialState: InitialState = {
-  user: typeof window !== "undefined" ? localStorage.getItem("user") || "" : "",
+  user: "",
 };
 
-
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const signInUser = createAsyncThunk<string, { userName: string, password: string }, { rejectValue: string }>("user/signIn", async (signInInfo, thunkAPI) => {
   try {
+
+    const response = await axios.post(`${BASE_URL}/user/api/v1/user/sign-in`, signInInfo)
+
     localStorage.setItem("user", signInInfo.userName)
     return signInInfo.userName
   } catch (error) {
@@ -21,6 +27,8 @@ export const signInUser = createAsyncThunk<string, { userName: string, password:
 
 export const signUpUser = createAsyncThunk<string, { name: string, userName: string, password: string }, { rejectValue: string }>("user/signUp", async (signUpInfo, thunkAPI) => {
   try {
+    const response = await axios.post(`${BASE_URL}/user/api/v1/user/sign-up`, signUpInfo)
+
     localStorage.setItem("user", signUpInfo.userName)
     return signUpInfo.userName
   } catch (error) {
@@ -30,6 +38,8 @@ export const signUpUser = createAsyncThunk<string, { name: string, userName: str
 
 export const signOutUser = createAsyncThunk<string, { userName: string }, { rejectValue: string }>("user/signOut", async (signOutInfo, thunkAPI) => {
   try {
+    const response = await axios.post(`${BASE_URL}/user/api/v1/user/sign-out`, signOutInfo)
+    localStorage.removeItem("user")
     return ""
   } catch (error) {
     return thunkAPI.rejectWithValue("rejected")

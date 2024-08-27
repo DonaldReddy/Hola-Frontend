@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { signOutUser } from "./userSlice";
 
 type Chat = {
     chatId: string,
@@ -23,11 +24,18 @@ export const chatSlice = createSlice({
     initialState,
     reducers: {
         selectChat: (state, action: PayloadAction<Chat>) => {
+            console.log(state.selectedChat.chatId);
+
             state.selectedChat = action.payload
         },
         unSelectChat: (state) => {
             state.selectedChat = initialState.selectedChat;
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(signOutUser.fulfilled, (state, action) => {
+            state.selectedChat = initialState.selectedChat;
+        })
     }
 })
 

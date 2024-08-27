@@ -13,7 +13,7 @@ function Page() {
 	);
 
 	return (
-		<div className="flex">
+		<div className="flex h-[95svh] overflow-hidden">
 			{screenWidth > 768 ? (
 				<>
 					<RecentChats />

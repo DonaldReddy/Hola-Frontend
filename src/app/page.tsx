@@ -8,10 +8,10 @@ export default function Home() {
 	const screenWidth = useScreenWidth();
 
 	return (
-		<div className=" bg-black min-h-svh flex flex-col justify-between items-center text-slate-50">
+		<div className="h-full flex flex-col justify-between items-center text-slate-50">
 			<span className="loader"></span>
 			<Header />
-			<div className=" min-h-svh flex justify-center items-center bg-[url('/images/background.svg')] bg-no-repeat bg-center bg-cover w-full">
+			<div className="h-[95svh]  flex justify-center items-center bg-[url('/images/background.svg')] bg-no-repeat bg-center bg-cover w-full">
 				<Image
 					src="/images/logo.svg"
 					className=" absolute"

@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Hola Messenger",
-	icons: "/images/logo.svg",
+	icons: { icon: "/images/logo.svg" },
 };
 
 export default function RootLayout({
@@ -17,9 +17,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body
-				className={inter.className + " overflow-hidden bg-black text-slate-50"}
-			>
+			<body className={inter.className + " h-svh bg-black text-slate-50"}>
 				<ReduxProvider>{children}</ReduxProvider>
 			</body>
 		</html>

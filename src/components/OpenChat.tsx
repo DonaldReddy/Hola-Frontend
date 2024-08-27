@@ -11,7 +11,6 @@ import MessageCard from "./MessageCard";
 
 function OpenChat() {
 	const screenWidth = useScreenWidth();
-	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const selectedChat = useAppSelector(
 		(state) => state.chatReducer.selectedChat,
@@ -110,21 +109,24 @@ function OpenChat() {
 		dispatch(unSelectChat());
 	}
 
-	function handleSendMessage(e: React.KeyboardEvent<HTMLInputElement>) {
-		if (e.key === "Enter") {
-			const message = e.currentTarget.value.trim();
-			if (message.length > 0) {
+	function handleSendMessage(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+		if (e.key == "Enter" && e.shiftKey) return;
+		if (e.key === "Enter" && !e.shiftKey) {
+			e.preventDefault();
+
+			const trimmedMessage = e.currentTarget.value.trim();
+			if (trimmedMessage.length > 0) {
 				setConversationData([
 					...conversationData,
 					{
-						messageId: conversationData.length + 1 + "",
+						messageId: (conversationData.length + 1).toString(),
 						sender: user,
-						receiver: "",
-						message: message,
-						timestamp: "",
+						receiver: selectedChat.userName,
+						message: trimmedMessage,
+						timestamp: new Date().toISOString(),
 					},
 				]);
-				e.currentTarget.value = "";
+				e.currentTarget.value = ""; // Clear the textarea
 			}
 		}
 	}
@@ -169,10 +171,9 @@ function OpenChat() {
 				))}
 			</div>
 
-			<div className="bg-[#4200996c] w-full h-[7%] flex justify-center items-center">
-				<input
-					type="text"
-					className="w-[90%] bg-transparent border-[1px] border-[#ffffff4b] px-2 py-1 rounded-md "
+			<div className="bg-[#42009939] w-full h-[7%] flex justify-center items-center border-t-[1px] border-[#ffffff4c]">
+				<textarea
+					className="h-[5svh] w-[90%] border-[1px] border-[#ffffff4b] px-2 py-1 rounded-md bg-[#4200994f] outline-none focus:bg-[#420099] resize-none chat-card"
 					placeholder="Type a message"
 					onKeyDown={handleSendMessage}
 				/>

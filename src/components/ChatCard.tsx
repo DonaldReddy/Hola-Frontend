@@ -25,7 +25,7 @@ function ChatCard({
 
 	return (
 		<div
-			className="h-20 m-1 px-1 flex items-center justify-around  border-[1px] border-[#ffffff2e] rounded-sm hover:bg-[#42009938]"
+			className="h-20 mt-1 px-1 flex items-center justify-around  border-[1px] border-[#ffffff2e] rounded-sm hover:bg-[#42009938]"
 			onClick={handleClick}
 		>
 			<CgProfile size={50} />

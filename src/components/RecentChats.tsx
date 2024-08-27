@@ -126,10 +126,10 @@ function RecentChats() {
 	];
 
 	return (
-		<div className="w-full lg:w-[30%] min-h-svh px-2 bg-[#42009941]">
-			<h1 className="text-xl">Chats</h1>
+		<div className="w-full h-full lg:w-[30%] px-2 ">
+			<h1 className="text-xl h-[5%]">Chats</h1>
 			<SearchBar />
-			<div className="max-h-svh overflow-scroll chat-card py-3">
+			<div className="h-[90%] py-2 overflow-y-scroll chat-card">
 				{recentChats.map(
 					(val): ReactNode => (
 						<ChatCard

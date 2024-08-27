@@ -8,7 +8,7 @@ function SearchBar() {
 	}
 
 	return (
-		<div className="flex items-center w-full my-2 px-3 py-1 gap-1 border-[1px] border-slate-50 rounded-3xl ">
+		<div className="flex items-center w-full p-1 gap-1 border-[1px] border-slate-50 rounded-3xl ">
 			<IoIosSearch color="white" size={20} />
 			<input
 				className="w-full text-slate-50 bg-black outline-none"

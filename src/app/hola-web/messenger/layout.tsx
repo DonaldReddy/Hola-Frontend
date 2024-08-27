@@ -11,27 +11,25 @@ function Layout({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		setIsClient(true);
-		if (!user) router.replace("/");
+		if (!user) router.replace("/hola-web");
 	}, [user, router]);
 
 	if (!isClient) {
 		return (
-			<div className="min-h-svh flex justify-center items-center">
-				Loading...
-			</div>
+			<div className="h-svh flex justify-center items-center">Loading...</div>
 		);
 	}
 
 	if (!user) {
 		return (
-			<div className="min-h-svh flex justify-center items-center">
+			<div className="h-svh flex justify-center items-center">
 				not logged in
 			</div>
 		);
 	}
 
 	return (
-		<div>
+		<div className="h-svh">
 			<MessengerNavbar />
 			{children}
 		</div>
