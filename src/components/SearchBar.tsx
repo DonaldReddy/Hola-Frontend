@@ -1,10 +1,27 @@
 "use client";
-import React, { ChangeEvent } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 
 function SearchBar() {
+	const searchParams = useSearchParams();
+	const router = useRouter();
+	const [search, setSearch] = useState("");
+
+	useEffect(() => {
+		const initialSearch = searchParams.get("search") || "";
+
+		if (search === "") {
+			setSearch(initialSearch);
+		}
+	}, [searchParams]);
+
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
-		console.log(e.target.value);
+		const newSearch = e.target.value;
+		setSearch(newSearch);
+		const params = new URLSearchParams(window.location.search);
+		params.set("search", newSearch);
+		router.replace(`?${params.toString()}`);
 	}
 
 	return (
@@ -14,6 +31,7 @@ function SearchBar() {
 				className="w-full text-slate-50 bg-black outline-none"
 				type="text"
 				placeholder="Search"
+				value={search}
 				onChange={handleChange}
 			/>
 		</div>

@@ -4,9 +4,8 @@
 
 .loader {
   height: 100svh;
-  width: 100svh;
+  width: 100svw;
   scale: 4;
-  overflow: hidden;
   background: rgb(0, 0, 0);
   position: absolute;
   z-index: 1;

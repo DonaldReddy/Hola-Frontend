@@ -1,12 +1,7 @@
-"use client";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import useScreenWidth from "@/customHooks/useScreenWidth";
 import Image from "next/image";
 
 export default function Home() {
-	const screenWidth = useScreenWidth();
-
 	return (
 		<div className="h-full flex flex-col justify-between items-center text-slate-50">
 			<span className="loader"></span>
@@ -20,7 +15,6 @@ export default function Home() {
 					height={197}
 				/>
 			</div>
-			{/* <Footer /> */}
 		</div>
 	);
 }

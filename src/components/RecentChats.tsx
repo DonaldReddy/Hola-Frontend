@@ -1,7 +1,12 @@
-import React, { ReactNode } from "react";
+"use client";
+import React, { ReactNode, useEffect, useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import ChatCard from "./ChatCard";
+import { useSearchParams } from "next/navigation";
+
 function RecentChats() {
+	const searchParams = useSearchParams();
+
 	const recentChats = [
 		{
 			chatId: "1",
@@ -124,13 +129,23 @@ function RecentChats() {
 			timestamp: "1 week ago",
 		},
 	];
+	const [filtered, setFiltered] = useState(recentChats);
+
+	useEffect(() => {
+		const curSearch = searchParams.get("search") || "";
+		setFiltered(
+			recentChats.filter((chat) =>
+				chat.userName.toLowerCase().includes(curSearch),
+			),
+		);
+	}, [searchParams]);
 
 	return (
-		<div className="w-full h-full lg:w-[30%] px-2 ">
+		<div className="w-full h-full md:w-[40%] lg:w-[30%] px-2 ">
 			<h1 className="text-xl h-[5%]">Chats</h1>
 			<SearchBar />
 			<div className="h-[90%] py-2 overflow-y-scroll chat-card">
-				{recentChats.map(
+				{filtered.map(
 					(val): ReactNode => (
 						<ChatCard
 							key={val.chatId}

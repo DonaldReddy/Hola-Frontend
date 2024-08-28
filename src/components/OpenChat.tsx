@@ -5,7 +5,6 @@ import { IoIosSearch } from "react-icons/io";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import useScreenWidth from "@/customHooks/useScreenWidth";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { useRouter } from "next/navigation";
 import { unSelectChat } from "@/redux/slices/chatSlice";
 import MessageCard from "./MessageCard";
 
@@ -133,14 +132,14 @@ function OpenChat() {
 
 	if (!selectedChat.userName)
 		return (
-			<div className="flex w-[70%] justify-center items-center">
+			<div className="flex md:w-[60%] lg:w-[70%] justify-center items-center">
 				select a chat to start messaging
 			</div>
 		);
 
 	return (
 		<div
-			className={`w-full h-svh lg:w-[70%] flex flex-col items-center border-l-[1px] border-[#ffffff3c] `}
+			className={`w-full h-svh md:w-[60%] lg:w-[70%] flex flex-col items-center border-l-[1px] border-[#ffffff3c] `}
 		>
 			<div className="h-[8%] w-full px-3 flex items-center justify-between border-[1px] border-[#ffffff2e] bg-[#42009963] gap-3">
 				{screenWidth <= 768 && <FaArrowLeftLong onClick={handleGoBack} />}
