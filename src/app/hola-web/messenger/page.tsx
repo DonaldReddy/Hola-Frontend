@@ -3,10 +3,9 @@ import React from "react";
 import RecentChats from "@/components/RecentChats";
 import OpenChat from "../../../components/OpenChat";
 import { useAppSelector } from "@/redux/store";
-import useScreenWidth from "@/customHooks/useScreenWidth";
 
 function Page() {
-	const screenWidth = useScreenWidth();
+	const screenWidth = useAppSelector((s) => s.generalSlice.screenWidth);
 
 	const selectedChat = useAppSelector(
 		(state) => state.chatReducer.selectedChat,

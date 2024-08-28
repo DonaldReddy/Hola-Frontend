@@ -1,7 +1,8 @@
 import Header from "@/components/Header";
 import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
+	await new Promise((resolve) => setTimeout(resolve, 3000));
 	return (
 		<div className="h-full flex flex-col justify-between items-center text-slate-50">
 			<span className="loader"></span>

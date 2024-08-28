@@ -6,14 +6,13 @@ import { FaUserFriends } from "react-icons/fa";
 import { GoGear } from "react-icons/go";
 import { IoPersonCircleSharp, IoClose } from "react-icons/io5";
 import { CgMenuLeftAlt } from "react-icons/cg";
-import useScreenWidth from "@/customHooks/useScreenWidth";
 import { useRouter } from "next/navigation";
 import { FiLogOut } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { signOutUser } from "@/redux/slices/userSlice";
 
 function MessengerNavbar() {
-	const screenWidth = useScreenWidth();
+	const screenWidth = useAppSelector((s) => s.generalSlice.screenWidth);
 	const [showMenu, setShowMenu] = useState(false);
 	const router = useRouter();
 	const dispatch = useAppDispatch();

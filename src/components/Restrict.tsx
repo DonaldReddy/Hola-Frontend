@@ -1,7 +1,7 @@
 "use client";
-import { memo } from "react";
-import useScreenWidth from "@/customHooks/useScreenWidth";
+import { memo, useEffect } from "react";
 import Image from "next/image";
+import { useAppSelector } from "@/redux/store";
 
 const CachedImage = memo(
 	({
@@ -18,8 +18,8 @@ const CachedImage = memo(
 );
 
 function Restrict({ children }: { children: React.ReactNode }) {
-	const screenWidth = useScreenWidth();
-	if (screenWidth === 0) return <></>;
+	const screenWidth = useAppSelector((state) => state.generalSlice.screenWidth);
+
 	if (screenWidth < 768)
 		return (
 			<div className="h-svh w-svw flex flex-col justify-center items-center text-secondary">

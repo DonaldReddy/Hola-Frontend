@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import useScreenWidth from "@/customHooks/useScreenWidth";
 import { signUpUser } from "@/redux/slices/userSlice";
 import { useAppSelector, useAppDispatch } from "@/redux/store";
 import { useRouter } from "next/navigation";
@@ -14,7 +13,7 @@ function Page() {
 		password: "",
 		name: "",
 	});
-	const screenWidth = useScreenWidth();
+	const screenWidth = useAppSelector((state) => state.generalSlice.screenWidth);
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.userReducer.user);
 	const router = useRouter();

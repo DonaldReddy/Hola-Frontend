@@ -13,7 +13,6 @@ function Page() {
 	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
-
 		setIsClient(true);
 		if (typeof window !== "undefined") {
 			const userFromStorage = localStorage.getItem("user") || "";
@@ -22,7 +21,7 @@ function Page() {
 				router.push("/hola-web/messenger");
 			}
 		}
-	}, []);
+	}, [user, router, dispatch]);
 
 	if (!isClient || user) {
 		return (

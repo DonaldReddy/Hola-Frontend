@@ -3,13 +3,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { IoIosSearch } from "react-icons/io";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import useScreenWidth from "@/customHooks/useScreenWidth";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { unSelectChat } from "@/redux/slices/chatSlice";
 import MessageCard from "./MessageCard";
 
 function OpenChat() {
-	const screenWidth = useScreenWidth();
+	const screenWidth = useAppSelector((s) => s.generalSlice.screenWidth);
 	const dispatch = useAppDispatch();
 	const selectedChat = useAppSelector(
 		(state) => state.chatReducer.selectedChat,

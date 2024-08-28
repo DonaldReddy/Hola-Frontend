@@ -14,7 +14,7 @@ function SearchBar() {
 		if (search === "") {
 			setSearch(initialSearch);
 		}
-	}, [searchParams]);
+	}, [searchParams, search]);
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
 		const newSearch = e.target.value;

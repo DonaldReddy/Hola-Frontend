@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import ChatCard from "./ChatCard";
 import { useSearchParams } from "next/navigation";
@@ -129,16 +129,17 @@ function RecentChats() {
 			timestamp: "1 week ago",
 		},
 	];
-	const [filtered, setFiltered] = useState(recentChats);
+	const [curSearch, setCurSearch] = useState(searchParams.get("search") || "");
 
 	useEffect(() => {
-		const curSearch = searchParams.get("search") || "";
-		setFiltered(
-			recentChats.filter((chat) =>
-				chat.userName.toLowerCase().includes(curSearch),
-			),
-		);
+		setCurSearch(searchParams.get("search") || "");
 	}, [searchParams]);
+
+	const filtered = useMemo(() => {
+		return recentChats.filter((chat) =>
+			chat.userName.toLowerCase().includes(curSearch),
+		);
+	}, [curSearch, recentChats]);
 
 	return (
 		<div className="w-full h-full md:w-[40%] lg:w-[30%] px-2 ">

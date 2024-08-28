@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/redux/ReduxProvider";
 import Restrict from "@/components/Restrict";
+import Init from "./init";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,9 +24,10 @@ export default function RootLayout({
 					inter.className + " h-svh bg-black text-slate-50 overflow-hidden"
 				}
 			>
-				<Restrict>
-					<ReduxProvider>{children}</ReduxProvider>
-				</Restrict>
+				<ReduxProvider>
+					<Init />
+					<Restrict>{children}</Restrict>
+				</ReduxProvider>
 			</body>
 		</html>
 	);
