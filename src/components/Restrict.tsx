@@ -4,6 +4,7 @@ import Image from "next/image";
 
 function Restrict({ children }: { children: React.ReactNode }) {
 	const screenWidth = useScreenWidth();
+	if (screenWidth === 0) return <></>;
 	if (screenWidth < 768)
 		return (
 			<div className="h-svh w-svw flex flex-col justify-center items-center text-secondary">
