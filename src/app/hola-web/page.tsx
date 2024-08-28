@@ -13,7 +13,6 @@ function Page() {
 	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
-		console.log("came");
 
 		setIsClient(true);
 		if (typeof window !== "undefined") {

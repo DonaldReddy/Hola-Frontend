@@ -7,8 +7,6 @@ function MessageCard({
 	msg: { message: string; timestamp: string };
 	isUser: boolean;
 }) {
-	console.log(msg.message);
-
 	return (
 		<div className={`flex ${isUser ? "justify-end" : "justify-start"} my-2`}>
 			<div
