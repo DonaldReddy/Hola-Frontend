@@ -20,7 +20,7 @@ function Layout({ children }: { children: ReactNode }) {
 				router.push("/hola-web/");
 			}
 		}
-	}, [isClient]);
+	}, [isClient, user]);
 
 	if (!isClient) {
 		return (

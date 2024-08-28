@@ -13,6 +13,8 @@ function Page() {
 	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
+		console.log("came");
+
 		setIsClient(true);
 		if (typeof window !== "undefined") {
 			const userFromStorage = localStorage.getItem("user") || "";
