@@ -67,7 +67,10 @@ function MessengerNavbar() {
 						aria-label="Logout"
 						title="logout"
 						className=" cursor-pointer"
-						onClick={() => dispatch(signOutUser({ userName: user }))}
+						onClick={() => {
+							dispatch(signOutUser({ userName: user }));
+							navigateTo("/hola-web");
+						}}
 					/>
 				</div>
 			)}
