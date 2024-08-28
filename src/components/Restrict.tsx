@@ -17,6 +17,8 @@ const CachedImage = memo(
 	}) => <Image src={src} width={width} height={height} alt={alt} />,
 );
 
+CachedImage.displayName = "CachedImage";
+
 function Restrict({ children }: { children: React.ReactNode }) {
 	const screenWidth = useAppSelector((state) => state.generalSlice.screenWidth);
 

@@ -5,15 +5,18 @@ import { setIsClient, setScreenWidth } from "@/redux/slices/generalSlice";
 
 function Init() {
 	const dispatch = useAppDispatch();
-	function handleResize() {
-		dispatch(setScreenWidth(window.innerWidth));
-	}
+
 	useEffect(() => {
 		dispatch(setIsClient(true));
+
+		function handleResize() {
+			dispatch(setScreenWidth(window.innerWidth));
+		}
+
 		handleResize();
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
-	}, []);
+	}, [dispatch]);
 
 	return <></>;
 }
