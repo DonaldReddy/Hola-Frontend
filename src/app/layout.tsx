@@ -18,9 +18,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={inter.className + " h-svh bg-black text-slate-50"}>
+			<body
+				className={
+					inter.className + " h-svh bg-black text-slate-50 overflow-hidden"
+				}
+			>
 				<Restrict>
-				<ReduxProvider>{children}</ReduxProvider>
+					<ReduxProvider>{children}</ReduxProvider>
 				</Restrict>
 			</body>
 		</html>
