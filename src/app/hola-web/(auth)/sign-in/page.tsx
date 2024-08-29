@@ -80,7 +80,7 @@ function Page() {
 						name="userName"
 						type="text"
 						required
-						className="text-slate-50 mb-6 px-2 py-1 outline-none rounded-lg bg-transparent-500"
+						className="text-slate-50 mb-6 px-2 py-1 outline-none rounded-lg bg-[#ffffff29]"
 						onChange={handleChange}
 						value={signInInfo.userName}
 						placeholder="Enter Username"
