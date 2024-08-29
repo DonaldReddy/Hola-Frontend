@@ -84,7 +84,7 @@ function Page() {
 						name="name"
 						type="text"
 						required
-						className="text-slate-50 mb-6 px-2 py-1 outline-none rounded-lg bg-[#d9d9d956]"
+						className="text-slate-50 mb-6 px-2 py-1 outline-none rounded-lg bg-transparent-500"
 						onChange={handleChange}
 						value={signUpInfo.name}
 						placeholder="Enter Name"
@@ -98,7 +98,7 @@ function Page() {
 						name="userName"
 						type="text"
 						required
-						className="text-slate-50 mb-6 px-2 py-1 outline-none rounded-lg bg-[#d9d9d956]"
+						className="text-slate-50 mb-6 px-2 py-1 outline-none rounded-lg bg-transparent-500"
 						onChange={handleChange}
 						value={signUpInfo.userName}
 						placeholder="Enter Username"
@@ -112,7 +112,7 @@ function Page() {
 						name="password"
 						type="password"
 						required
-						className="text-slate-50 mb-5 px-2 py-1 outline-none rounded-lg bg-[#d9d9d956]"
+						className="text-slate-50 mb-5 px-2 py-1 outline-none rounded-lg bg-transparent-500"
 						onChange={handleChange}
 						value={signUpInfo.password}
 						placeholder="Enter Password"
@@ -120,7 +120,7 @@ function Page() {
 					<div className="mt-8 flex justify-center">
 						<button
 							type="submit"
-							className="border border-slate-50 rounded-md px-4 py-1 text-xs md:text-sm hover:bg-[#7000FF]"
+							className="border border-slate-50 rounded-md px-4 py-1 text-xs md:text-sm hover:bg-hover-primary"
 						>
 							Sign up
 						</button>

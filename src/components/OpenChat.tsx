@@ -2,14 +2,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { IoIosSearch } from "react-icons/io";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { FaArrowLeftLong } from "react-icons/fa6";
-import { unSelectChat } from "@/redux/slices/chatSlice";
+import { useAppSelector } from "@/redux/store";
 import MessageCard from "./MessageCard";
 
 function OpenChat() {
-	const screenWidth = useAppSelector((s) => s.generalSlice.screenWidth);
-	const dispatch = useAppDispatch();
 	const selectedChat = useAppSelector(
 		(state) => state.chatReducer.selectedChat,
 	);
@@ -103,10 +99,6 @@ function OpenChat() {
 		}
 	}, [conversationData, selectedChat]);
 
-	function handleGoBack(e: React.MouseEvent<SVGAElement>) {
-		dispatch(unSelectChat());
-	}
-
 	function handleSendMessage(e: React.KeyboardEvent<HTMLTextAreaElement>) {
 		if (e.key == "Enter" && e.shiftKey) return;
 		if (e.key === "Enter" && !e.shiftKey) {
@@ -140,8 +132,7 @@ function OpenChat() {
 		<div
 			className={`w-full h-svh md:w-[60%] lg:w-[70%] flex flex-col items-center border-l-[1px] border-[#ffffff3c] `}
 		>
-			<div className="h-[8%] w-full px-3 flex items-center justify-between border-[1px] border-[#ffffff2e] bg-[#42009963] gap-3">
-				{screenWidth <= 768 && <FaArrowLeftLong onClick={handleGoBack} />}
+			<div className="h-[8%] w-full px-3 flex items-center justify-between border-[1px] border-[#ffffff2e] bg-primary-700 gap-3">
 				<div className="w-[95%] lg:w-full flex justify-between items-center">
 					<div className="flex items-center gap-2">
 						<CgProfile size={40} />
@@ -169,9 +160,9 @@ function OpenChat() {
 				))}
 			</div>
 
-			<div className="bg-[#42009939] w-full h-[7%] flex justify-center items-center border-t-[1px] border-[#ffffff4c]">
+			<div className="bg-primary-700 w-full h-[7%] flex justify-center items-center border-t-[1px] border-[#ffffff4c]">
 				<textarea
-					className="h-[5svh] w-[90%] border-[1px] border-[#ffffff4b] px-2 py-1 rounded-md bg-[#4200994f] outline-none focus:bg-[#420099] resize-none chat-card"
+					className="h-[5svh] w-[90%] border-[1px] border-[#ffffff4b] px-2 py-1 rounded-md bg-primary-500 outline-none focus:bg-primary resize-none chat-card text-sm"
 					placeholder="Type a message"
 					onKeyDown={handleSendMessage}
 				/>

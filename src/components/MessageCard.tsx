@@ -11,7 +11,7 @@ function MessageCard({
 		<div className={`flex ${isUser ? "justify-end" : "justify-start"} my-2`}>
 			<div
 				className={` max-w-[60%] py-1 px-2 rounded-md break-words text-sm whitespace-pre-wrap ${
-					isUser ? "bg-[#403f4183]" : "bg-[#4e118b83]"
+					isUser ? "bg-transparent-700" : "bg-primary-500"
 				}`}
 			>
 				{msg.message}

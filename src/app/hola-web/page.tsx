@@ -47,13 +47,13 @@ function Page() {
 			<div className="">
 				<Link
 					href="/hola-web/sign-in"
-					className="mx-5 border-slate-50 border rounded-md px-3 py-1 hover:bg-[#7000FF] hover:text-slate-50"
+					className="mx-5 border-slate-50 border rounded-md px-3 py-1 hover:bg-hover-primary hover:text-slate-50"
 				>
 					Sign in
 				</Link>
 				<Link
 					href="/hola-web/sign-up"
-					className="mx-5 border-slate-50 border rounded-md px-3 py-1 hover:bg-[#7000FF] hover:text-slate-50"
+					className="mx-5 border-slate-50 border rounded-md px-3 py-1 hover:bg-hover-primary hover:text-slate-50"
 				>
 					Sign up
 				</Link>

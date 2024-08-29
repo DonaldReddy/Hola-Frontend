@@ -9,8 +9,13 @@ const config: Config = {
 	theme: {
 		extend: {
 			colors: {
-				primary: "#37007C",
+				primary: "#38007C",
+				"primary-600": "#38007ca8",
+				"primary-500": "#38007ca8",
+				"primary-700": "#38007c6b",
+				"hover-primary-500": "#38007ca8",
 				secondary: "#ffffff",
+				"transparent-700": "#282727",
 			},
 		},
 	},
