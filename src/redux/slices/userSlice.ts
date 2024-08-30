@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
-
 type InitialState = {
 	user: string;
+	isLoading: boolean;
 };
 
 const initialState: InitialState = {
 	user: "",
+	isLoading: false,
 };
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -19,6 +19,8 @@ export const signInUser = createAsyncThunk<
 	{ rejectValue: string }
 >("user/signIn", async (signInInfo, thunkAPI) => {
 	try {
+		await new Promise((resolve) => setTimeout(resolve, 3000));
+
 		const response = await axios.post(
 			`${BASE_URL}/user/api/v1/user/sign-in`,
 			signInInfo,
@@ -37,6 +39,8 @@ export const signUpUser = createAsyncThunk<
 	{ rejectValue: string }
 >("user/signUp", async (signUpInfo, thunkAPI) => {
 	try {
+		await new Promise((resolve) => setTimeout(resolve, 3000));
+
 		const response = await axios.post(
 			`${BASE_URL}/user/api/v1/user/sign-up`,
 			signUpInfo,
@@ -69,35 +73,48 @@ export const userSlice = createSlice({
 	initialState,
 	reducers: {
 		changeUser: (state, action: PayloadAction<string>) => {
-			return {
-				user: action.payload,
-			};
+			state.user = action.payload;
 		},
 	},
 	extraReducers: (builder) => {
+		builder.addCase(signInUser.pending, (state) => {
+			state.isLoading = true;
+		});
 		builder.addCase(
 			signInUser.fulfilled,
 			(state, action: PayloadAction<string>) => {
+				state.isLoading = false;
 				state.user = action.payload;
 			},
 		);
 		builder.addCase(signInUser.rejected, (state, action) => {
+			state.isLoading = false;
 			state.user = "";
+		});
+		builder.addCase(signUpUser.pending, (state) => {
+			state.isLoading = true;
 		});
 		builder.addCase(
 			signUpUser.fulfilled,
 			(state, action: PayloadAction<string>) => {
+				state.isLoading = false;
 				state.user = action.payload;
 			},
 		);
 		builder.addCase(signUpUser.rejected, (state, action) => {
+			state.isLoading = false;
 			state.user = "";
 		});
+		builder.addCase(signOutUser.pending, (state) => {
+			state.isLoading = true;
+		});
 		builder.addCase(signOutUser.fulfilled, (state, action) => {
+			state.isLoading = false;
 			localStorage.removeItem("user");
 			state.user = "";
 		});
 		builder.addCase(signOutUser.rejected, (state, action) => {
+			state.isLoading = false;
 			localStorage.removeItem("user");
 			state.user = "";
 		});

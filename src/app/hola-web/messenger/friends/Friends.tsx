@@ -23,10 +23,10 @@ function Friends() {
 		{ id: 8, name: "Hank Green" },
 		{ id: 9, name: "Ivy Clark" },
 		{ id: 10, name: "Jack Daniels" },
-	]; 
+	];
 
 	return (
-		<div className="flex h-1/2 flex-col p-1 overflow-y-scroll items-center chat-card">
+		<div className="flex h-[70svh] flex-col p-1 overflow-y-scroll items-center chat-card">
 			{friends.map((friend) => (
 				<FriendCard friendUserName={friend.name} key={friend.id} />
 			))}

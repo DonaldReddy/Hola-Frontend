@@ -3,6 +3,9 @@ import userReducer from "./slices/userSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import chatReducer from "./slices/chatSlice";
 import generalSlice from "./slices/generalSlice";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 const store = configureStore({
 	reducer: {

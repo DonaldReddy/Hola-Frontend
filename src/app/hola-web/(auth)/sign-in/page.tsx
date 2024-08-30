@@ -6,12 +6,13 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { signInUser } from "@/redux/slices/userSlice";
 import { useAppSelector, useAppDispatch } from "@/redux/store";
 import { useRouter } from "next/navigation";
+import { AiOutlineLoading } from "react-icons/ai";
 
 function Page() {
 	const [signInInfo, setSignInInfo] = useState({ userName: "", password: "" });
-	const screenWidth = useAppSelector((state) => state.generalSlice.screenWidth);
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.userReducer.user);
+	const isLoading = useAppSelector((s) => s.userReducer.isLoading);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -29,44 +30,26 @@ function Page() {
 
 	return (
 		<div className="min-h-svh flex flex-col md:flex-row items-center">
-			{screenWidth >= 768 && (
-				<div id="left" className="w-full md:w-[55%] text-lg md:text-2xl ">
-					<div className="flex flex-col items-center gap-5">
-						<h1>Welcome to </h1>
-						<Image
-							src="/images/logo.svg"
-							className="w-[100px] md:w-[300px] lg:w-[400px]"
-							alt="logo"
-							width={100}
-							height={100}
-							priority={true}
-							sizes="(max-width: 768px) 100px, (max-width: 1200px) 300px, 400px"
-						/>
-						<h2>Sign in here and Explore</h2>
-					</div>
+			<div id="left" className="w-full md:w-[55%] text-lg md:text-2xl ">
+				<div className="flex flex-col items-center gap-5">
+					<h1>Welcome to </h1>
+					<Image
+						src="/images/logo.svg"
+						className="w-[100px] md:w-[300px] lg:w-[400px]"
+						alt="logo"
+						width={100}
+						height={100}
+						priority={true}
+						sizes="(max-width: 768px) 100px, (max-width: 1200px) 300px, 400px"
+					/>
+					<h2>Sign in here and Explore</h2>
 				</div>
-			)}
+			</div>
 			<div
 				id="right"
 				className=" min-h-svh w-full md:w-[45%]   flex flex-col justify-evenly items-center bg-gradient-to-b from-primary from-10%"
 			>
-				{screenWidth < 768 && (
-					<Image
-						src="/images/logo.svg"
-						className="w-[100px] md:w-[500px]"
-						alt="logo"
-						width={500}
-						height={500}
-						sizes="(max-width: 768px) 100px, 500px"
-						priority={true}
-					/>
-				)}
-
-				{screenWidth >= 768 && (
-					<h1 className=" text-xl md:text-2xl lg:text-3xl font-bold">
-						Sign in
-					</h1>
-				)}
+				<h1 className=" text-xl md:text-2xl lg:text-3xl font-bold">Sign in</h1>
 
 				<form
 					onSubmit={handleSubmit}
@@ -100,12 +83,15 @@ function Page() {
 						placeholder="Enter Password"
 					/>
 					<div className="mt-8 flex justify-center">
-						<button
-							type="submit"
-							className="border border-slate-50 rounded-md px-4 py-1 text-xs md:text-sm hover:bg-hover-primary"
-						>
-							Sign in
-						</button>
+						{!isLoading && (
+							<button
+								type="submit"
+								className="border border-slate-50 rounded-md px-4 py-1 text-xs md:text-sm hover:bg-hover-primary"
+							>
+								Sign in
+							</button>
+						)}
+						{isLoading && <AiOutlineLoading className=" animate-spin" />}
 					</div>
 				</form>
 				<Link
