@@ -14,18 +14,57 @@ function Page() {
 		password: "",
 		name: "",
 	});
+	const [errors, setErrors] = useState({
+		userName: "",
+		password: "",
+		name: "",
+	});
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.userReducer.user);
 	const isLoading = useAppSelector((s) => s.userReducer.isLoading);
 	const router = useRouter();
+	const hideButton =
+		isLoading.auth ||
+		!(signUpInfo.password && signUpInfo.userName && signUpInfo.name);
 
 	useEffect(() => {
 		if (user) router.replace("/hola-web/messenger");
 	}, [user, router]);
 
+	function validateSignUpInfo() {
+		let isValid = true;
+		let newErrors = { userName: "", password: "", name: "" };
+
+		// Validate userName
+		const userNameRegex = /^[a-z_]+$/;
+		if (!userNameRegex.test(signUpInfo.userName)) {
+			newErrors.userName =
+				"Username must contain only lowercase letters and underscores.";
+			isValid = false;
+		}
+
+		// Validate password
+		if (signUpInfo.password.length < 8) {
+			newErrors.password = "Password must be at least 8 characters long.";
+			isValid = false;
+		}
+
+		// Validate name
+		const nameRegex = /^[a-zA-Z\s]+$/;
+		if (!nameRegex.test(signUpInfo.name)) {
+			newErrors.name = "Name must contain only letters and spaces.";
+			isValid = false;
+		}
+
+		setErrors(newErrors);
+		return isValid;
+	}
+
 	function handleSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		dispatch(signUpUser(signUpInfo));
+		if (validateSignUpInfo()) {
+			dispatch(signUpUser(signUpInfo));
+		}
 	}
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -57,9 +96,9 @@ function Page() {
 
 				<form
 					onSubmit={handleSubmit}
-					className="flex flex-col my-5 text-xl lg:text-2xl"
+					className="flex flex-col justify-center my-5 text-xl lg:text-2xl"
 				>
-					<label htmlFor="userName" className="mb-2">
+					<label htmlFor="name" className="mb-2">
 						Name
 					</label>
 					<input
@@ -67,11 +106,14 @@ function Page() {
 						name="name"
 						type="text"
 						required
-						className="text-slate-50 mb-6 px-2 py-1 outline-none rounded-lg bg-transparent-500"
+						className={`text-slate-50 mb-6 px-2 py-1 outline-none rounded-lg bg-transparent-500 ${
+							errors.name ? "border-red-600 border" : ""
+						}`}
 						onChange={handleChange}
 						value={signUpInfo.name}
 						placeholder="Enter Name"
 					/>
+					{errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
 
 					<label htmlFor="userName" className="mb-2">
 						User Name
@@ -81,11 +123,16 @@ function Page() {
 						name="userName"
 						type="text"
 						required
-						className="text-slate-50 mb-6 px-2 py-1 outline-none rounded-lg bg-transparent-500"
+						className={`text-slate-50 mb-6 px-2 py-1 outline-none rounded-lg bg-transparent-500 ${
+							errors.userName ? "border-red-600 border" : ""
+						}`}
 						onChange={handleChange}
 						value={signUpInfo.userName}
 						placeholder="Enter Username"
 					/>
+					{errors.userName && (
+						<p className="text-red-600 text-sm">{errors.userName}</p>
+					)}
 
 					<label htmlFor="password" className="mb-2 mt-2">
 						Password
@@ -95,21 +142,30 @@ function Page() {
 						name="password"
 						type="password"
 						required
-						className="text-slate-50 mb-5 px-2 py-1 outline-none rounded-lg bg-transparent-500"
+						className={`text-slate-50 mb-5 px-2 py-1 outline-none rounded-lg bg-transparent-500 ${
+							errors.password ? "border-red-600 border" : ""
+						}`}
 						onChange={handleChange}
 						value={signUpInfo.password}
 						placeholder="Enter Password"
 					/>
+					{errors.password && (
+						<p className="text-red-600 text-sm">{errors.password}</p>
+					)}
+
 					<div className="mt-8 flex justify-center">
-						{!isLoading && (
+						{!isLoading.auth && (
 							<button
 								type="submit"
-								className="border border-slate-50 rounded-md px-4 py-1 text-xs md:text-sm hover:bg-hover-primary"
+								className={`border border-slate-50 rounded-md px-4 py-1 text-xs md:text-sm hover:bg-hover-primary ${
+									hideButton ? "opacity-30" : ""
+								}`}
+								disabled={hideButton}
 							>
 								Sign up
 							</button>
 						)}
-						{isLoading && <AiOutlineLoading className=" animate-spin" />}
+						{isLoading.auth && <AiOutlineLoading className=" animate-spin" />}
 					</div>
 				</form>
 				<Link

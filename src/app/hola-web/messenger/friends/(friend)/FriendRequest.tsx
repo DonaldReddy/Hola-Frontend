@@ -1,8 +1,8 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Link from "next/link";
 import React from "react";
-import RequestReceived from "./RequestReceived";
-import RequestSent from "./RequestSent";
+import RequestReceived from "../(request)/RequestReceived";
+import RequestSent from "../(request)/RequestSent";
 
 function FriendRequest({ searchParams }: { searchParams: { type: string } }) {
 	let currentTab = searchParams.type || "received";

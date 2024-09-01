@@ -1,5 +1,5 @@
 "use client";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import Image from "next/image";
 import { useAppSelector } from "@/redux/store";
 
@@ -21,8 +21,9 @@ CachedImage.displayName = "CachedImage";
 
 function Restrict({ children }: { children: React.ReactNode }) {
 	const screenWidth = useAppSelector((state) => state.generalSlice.screenWidth);
+	const isClient = useAppSelector((s) => s.generalSlice.isClient);
 
-	if (screenWidth < 768)
+	if (isClient && screenWidth < 768)
 		return (
 			<div className="h-svh w-svw flex flex-col justify-center items-center text-secondary">
 				<CachedImage

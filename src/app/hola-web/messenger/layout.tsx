@@ -1,26 +1,11 @@
 "use client";
 import React, { ReactNode, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/redux/store";
 import MessengerNavbar from "@/components/MessengerNavbar";
-import { changeUser } from "@/redux/slices/userSlice";
 
 function Layout({ children }: { children: ReactNode }) {
 	const user = useAppSelector((state) => state.userReducer.user);
-	const router = useRouter();
-	const [isClient, setIsClient] = useState(false);
-	const dispatch = useAppDispatch();
-
-	useEffect(() => {
-		setIsClient(true);
-		if (typeof window !== "undefined") {
-			const userFromStorage = localStorage.getItem("user") || "";
-			dispatch(changeUser(userFromStorage));
-			if (!userFromStorage) {
-				router.push("/hola-web/");
-			}
-		}
-	}, [isClient, user, dispatch, router]);
+	const isClient = useAppSelector((s) => s.generalSlice.isClient);
 
 	if (!isClient) {
 		return (

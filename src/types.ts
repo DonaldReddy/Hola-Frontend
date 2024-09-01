@@ -5,3 +5,13 @@ export type Chat = {
 	participants: string[];
 	groupName?: string;
 };
+export type FriendRequest = {
+	to: string;
+	requestId: string;
+	timeStamp: string;
+};
+export type ReceivedFriendRequest = {
+	from: string;
+	requestId: string;
+	timeStamp: string;
+};

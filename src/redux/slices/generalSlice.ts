@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type InitialsState = {
+type InitialState = {
 	screenWidth: number;
 	isClient: boolean;
 };
 
-const initialState: InitialsState = {
+const initialState: InitialState = {
 	screenWidth: 0,
 	isClient: false,
 };
@@ -22,5 +22,6 @@ export const generalSlice = createSlice({
 		},
 	},
 });
+
 export default generalSlice.reducer;
 export const { setScreenWidth, setIsClient } = generalSlice.actions;

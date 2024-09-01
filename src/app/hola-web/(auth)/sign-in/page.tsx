@@ -12,7 +12,8 @@ function Page() {
 	const [signInInfo, setSignInInfo] = useState({ userName: "", password: "" });
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.userReducer.user);
-	const isLoading = useAppSelector((s) => s.userReducer.isLoading);
+	const isLoading = useAppSelector((state) => state.userReducer.isLoading);
+	const error = useAppSelector((state) => state.userReducer.error);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -30,7 +31,7 @@ function Page() {
 
 	return (
 		<div className="min-h-svh flex flex-col md:flex-row items-center">
-			<div id="left" className="w-full md:w-[55%] text-lg md:text-2xl ">
+			<div id="left" className="w-full md:w-[55%] text-lg md:text-2xl">
 				<div className="flex flex-col items-center gap-5">
 					<h1>Welcome to </h1>
 					<Image
@@ -47,9 +48,9 @@ function Page() {
 			</div>
 			<div
 				id="right"
-				className=" min-h-svh w-full md:w-[45%]   flex flex-col justify-evenly items-center bg-gradient-to-b from-primary from-10%"
+				className="min-h-svh w-full md:w-[45%] flex flex-col justify-evenly items-center bg-gradient-to-b from-primary from-10%"
 			>
-				<h1 className=" text-xl md:text-2xl lg:text-3xl font-bold">Sign in</h1>
+				<h1 className="text-xl md:text-2xl lg:text-3xl font-bold">Sign in</h1>
 
 				<form
 					onSubmit={handleSubmit}
@@ -77,26 +78,40 @@ function Page() {
 						name="password"
 						type="password"
 						required
-						className="text-slate-50 mb-5 px-2 py-1 outline-none rounded-lg bg-transparent-500"
+						className="text-slate-50 mb-5 px-2 py-1 outline-none rounded-lg bg-[#ffffff29]"
 						onChange={handleChange}
 						value={signInInfo.password}
 						placeholder="Enter Password"
 					/>
+
+					{/* Display error message if sign-in fails */}
+					{error && (
+						<p className="text-red-500 mb-4 text-lg text-center">{error}</p>
+					)}
+
 					<div className="mt-8 flex justify-center">
-						{!isLoading && (
-							<button
-								type="submit"
-								className="border border-slate-50 rounded-md px-4 py-1 text-xs md:text-sm hover:bg-hover-primary"
-							>
-								Sign in
-							</button>
-						)}
-						{isLoading && <AiOutlineLoading className=" animate-spin" />}
+						<button
+							type="submit"
+							className={`border border-slate-50 rounded-md px-4 py-1 text-xs md:text-sm hover:bg-hover-primary ${
+								isLoading.auth || !(signInInfo.password && signInInfo.userName)
+									? "opacity-30"
+									: ""
+							}`}
+							disabled={
+								isLoading.auth || !(signInInfo.password && signInInfo.userName)
+							}
+						>
+							{isLoading.auth ? (
+								<AiOutlineLoading className="animate-spin" />
+							) : (
+								"Sign in"
+							)}
+						</button>
 					</div>
 				</form>
 				<Link
 					href="/hola-web/sign-up"
-					className=" underline decoration-[#7000FF] decoration-2 text-base"
+					className="underline decoration-[#7000FF] decoration-2 text-base"
 					replace
 				>
 					Don{"`"}t have an account?

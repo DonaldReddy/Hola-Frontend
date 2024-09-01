@@ -1,5 +1,8 @@
+import ReduxProvider from "@/redux/ReduxProvider";
 import { Metadata } from "next";
 import { ReactNode } from "react";
+import Init from "./init";
+import Restrict from "./Restrict";
 
 export function generateMetadata(): Metadata {
 	return {
@@ -11,5 +14,10 @@ export function generateMetadata(): Metadata {
 }
 
 export default function layout({ children }: { children: ReactNode }) {
-	return <div>{children}</div>;
+	return (
+		<ReduxProvider>
+			<Init />
+			<Restrict>{children}</Restrict>
+		</ReduxProvider>
+	);
 }

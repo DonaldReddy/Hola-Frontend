@@ -1,8 +1,9 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
-import Friends from "./Friends";
-import FriendRequest from "./FriendRequest";
+import Friends from "./(friend)/Friends";
+import FriendRequest from "./(friend)/FriendRequest";
+import People from "./(people)/People";
 
 function Page({
 	searchParams,
@@ -10,7 +11,11 @@ function Page({
 	searchParams: { tab: string; type: string };
 }) {
 	let currentTab = searchParams.tab || "friends";
-	if (currentTab !== "friends" && currentTab !== "friends-request") {
+	if (
+		currentTab !== "friends" &&
+		currentTab !== "friends-request" &&
+		currentTab !== "people"
+	) {
 		currentTab = "friends";
 	}
 
@@ -38,6 +43,22 @@ function Page({
 						</Link>
 					</TabsTrigger>
 					<TabsTrigger
+						value="people"
+						className="w-1/2 mx-1 bg-zinc-700 text-slate-300 data-[state=active]:bg-primary data-[state=active]:text-slate-50"
+						asChild
+					>
+						<Link
+							href={{
+								query: {
+									tab: "people",
+								},
+							}}
+							replace
+						>
+							People
+						</Link>
+					</TabsTrigger>
+					<TabsTrigger
 						value="friends-request"
 						className="w-1/2 mx-1 bg-zinc-700 text-slate-300 data-[state=active]:bg-primary data-[state=active]:text-slate-50"
 						asChild
@@ -57,6 +78,9 @@ function Page({
 				</TabsList>
 				<TabsContent value="friends">
 					<Friends />
+				</TabsContent>
+				<TabsContent value="people">
+					<People />
 				</TabsContent>
 				<TabsContent value="friends-request">
 					<FriendRequest searchParams={searchParams} />

@@ -10,9 +10,7 @@ type InitialState = {
 };
 
 const initialState: InitialState = {
-	recentChats: [
-		{ chatId: "", lastMessageAt: "", chatType: "", participants: [""] },
-	],
+	recentChats: [],
 	selectedChat: "",
 	isLoading: false,
 };
@@ -56,13 +54,16 @@ export const fetchRecentChats = createAsyncThunk<
 
 		chats = chats.sort(
 			(a, b) =>
-				new Date(a.lastMessageAt).getTime() -
-				new Date(b.lastMessageAt).getTime(),
+				new Date(b.lastMessageAt).getTime() -
+				new Date(a.lastMessageAt).getTime(),
 		);
 
 		return chats;
 	} catch (error: any) {
-		return thunkAPI.rejectWithValue(error.message || "Failed to fetch chats");
+		console.error("Error fetching recent chats:", error);
+		return thunkAPI.rejectWithValue(
+			error.message || "Failed to fetch recent chats",
+		);
 	}
 });
 
@@ -70,27 +71,33 @@ export const chatSlice = createSlice({
 	name: "chats",
 	initialState,
 	reducers: {
-		selectChat: (state, action: PayloadAction<Chat>) => {
-			state.selectedChat = action.payload.chatId;
+		selectChat: (state, action: PayloadAction<string>) => {
+			state.selectedChat = action.payload;
 		},
 		unSelectChat: (state) => {
-			state.selectedChat = initialState.selectedChat;
+			state.selectedChat = "";
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(signOutUser.fulfilled, (state, action) => {
-			return initialState;
-		});
-		builder.addCase(fetchRecentChats.pending, (state) => {
-			state.isLoading = true;
-		});
+		builder.addCase(signOutUser.fulfilled, () => initialState);
 		builder.addCase(fetchRecentChats.fulfilled, (state, action) => {
-			state.isLoading = false;
 			state.recentChats = action.payload;
 		});
-		builder.addCase(fetchRecentChats.rejected, (state, action) => {
-			state.isLoading = false;
-		});
+		builder
+			.addMatcher(
+				(action) => action.type.endsWith("/pending"),
+				(state) => {
+					state.isLoading = true;
+				},
+			)
+			.addMatcher(
+				(action) =>
+					action.type.endsWith("/rejected") ||
+					action.type.endsWith("/fulfilled"),
+				(state) => {
+					state.isLoading = false;
+				},
+			);
 	},
 });
 

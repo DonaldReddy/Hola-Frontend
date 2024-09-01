@@ -14,13 +14,14 @@ function SearchBar() {
 		if (search === "") {
 			setSearch(initialSearch);
 		}
-	}, [searchParams, search]);
+	}, []);
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
 		const newSearch = e.target.value;
 		setSearch(newSearch);
 		const params = new URLSearchParams(window.location.search);
-		params.set("search", newSearch);
+		if (newSearch) params.set("search", newSearch);
+		else params.delete("search");
 		router.replace(`?${params.toString()}`);
 	}
 
@@ -28,7 +29,7 @@ function SearchBar() {
 		<div className="flex items-center w-full p-1 gap-1 border-[1px] border-slate-50 rounded-3xl ">
 			<IoIosSearch color="white" size={20} />
 			<input
-				className="w-full text-slate-50 bg-black outline-none"
+				className="w-full text-slate-50 bg-transparent outline-none"
 				type="text"
 				placeholder="Search"
 				value={search}

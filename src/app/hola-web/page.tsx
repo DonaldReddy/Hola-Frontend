@@ -1,27 +1,18 @@
 "use client";
-import { changeUser } from "@/redux/slices/userSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { useAppSelector } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function Page() {
-	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.userReducer.user);
+	const isClient = useAppSelector((s) => s.generalSlice.isClient);
 	const router = useRouter();
-	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
-		setIsClient(true);
-		if (typeof window !== "undefined") {
-			const userFromStorage = localStorage.getItem("user") || "";
-			dispatch(changeUser(userFromStorage));
-			if (userFromStorage) {
-				router.push("/hola-web/messenger");
-			}
-		}
-	}, [user, router, dispatch]);
+		if (user) router.replace("/hola-web/messenger");
+	}, [user, router]);
 
 	if (!isClient || user) {
 		return (
