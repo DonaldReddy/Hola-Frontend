@@ -2,13 +2,13 @@
 import React, { useEffect, useRef } from "react";
 import RequestCard from "./RequestCard";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { getSentFriendRequests } from "@/redux/slices/userSlice";
+import { getSentFriendRequests } from "@/redux/slices/friendSlice";
 import { AiOutlineLoading } from "react-icons/ai";
 
 function RequestSent() {
-	const requests = useAppSelector((s) => s.userReducer.requestSent);
+	const requests = useAppSelector((s) => s.friendSlice.requestSent);
 	const user = useAppSelector((s) => s.userReducer.user);
-	const isLoading = useAppSelector((s) => s.userReducer.isLoading);
+	const isLoading = useAppSelector((s) => s.friendSlice.isLoading);
 	const abortControllerRef = useRef<AbortController | null>(null);
 	const dispatch = useAppDispatch();
 
@@ -44,18 +44,20 @@ function RequestSent() {
 	}, [user, dispatch]);
 
 	return (
-		<div className="flex h-[70svh] justify-center items-center">
-			{isLoading.friends ? (
+		<div className="flex h-[77svh] justify-center items-center">
+			{isLoading ? (
 				<AiOutlineLoading className="animate-spin" size={30} />
 			) : requests.length > 0 ? ( // Add a safeguard check
 				<div className="flex h-[56svh] rounded-md flex-col p-1 overflow-y-scroll items-center chat-card">
 					{requests.map((request) => (
-						<RequestCard
-							userName={request.to}
-							key={request.requestId}
-							id={request.requestId}
-							type="sent"
-						/>
+						<div key={request.requestId}>
+							<RequestCard
+								userName={request.to}
+								key={request.requestId}
+								id={request.requestId}
+								type="sent"
+							/>
+						</div>
 					))}
 				</div>
 			) : (

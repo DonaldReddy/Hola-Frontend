@@ -4,19 +4,13 @@ import { FriendRequest, ReceivedFriendRequest } from "@/types";
 
 type InitialState = {
 	user: string;
-	isLoading: { auth: boolean; friends: boolean; request: boolean };
-	friends: string[];
-	requestSent: FriendRequest[];
-	requestReceived: ReceivedFriendRequest[];
+	isLoading: boolean;
 	error: string | null;
 };
 
 const initialState: InitialState = {
 	user: "",
-	friends: [],
-	isLoading: { auth: false, friends: false, request: false },
-	requestSent: [],
-	requestReceived: [],
+	isLoading: false,
 	error: null,
 };
 
@@ -87,75 +81,16 @@ export const signOutUser = createAsyncThunk<
 	}
 });
 
-export const getAllFriends = createAsyncThunk<
-	string[],
-	{ user: string; signal: AbortSignal },
-	{ rejectValue: string }
->("user/getAllFriends", async ({ user, signal }, thunkAPI) => {
-	try {
-		const response = await axios.get(
-			`${BASE_URL}/user/api/v1/user/get-all-friends?userName=${user}`,
-			{ signal },
-		);
-
-		return response.data.friends;
-	} catch (error: any) {
-		return thunkAPI.rejectWithValue(
-			error?.response?.data?.error || "Failed to fetch friends",
-		);
-	}
-});
-
-export const getReceivedFriendRequests = createAsyncThunk<
-	ReceivedFriendRequest[],
-	{ user: string; signal: AbortSignal },
-	{ rejectValue: string }
->("user/getReceivedFriendRequests", async ({ user, signal }, thunkAPI) => {
-	try {
-		const response = await axios.get(
-			`${BASE_URL}/friend-request/api/v1/friend-request/get-received-friend-requests?userName=${user}`,
-			{ signal },
-		);
-
-		return response.data.friendRequests;
-	} catch (error: any) {
-		return thunkAPI.rejectWithValue(
-			error?.response?.data.error || "Failed to fetch received friend requests",
-		);
-	}
-});
-
-export const getSentFriendRequests = createAsyncThunk<
-	FriendRequest[],
-	{ user: string; signal: AbortSignal },
-	{ rejectValue: string }
->("user/getSentFriendRequests", async ({ user, signal }, thunkAPI) => {
-	try {
-		const response = await axios.get(
-			`${BASE_URL}/friend-request/api/v1/friend-request/get-sent-friend-requests?userName=${user}`,
-			{ signal },
-		);
-		return response.data.friendRequests;
-	} catch (error: any) {
-		return thunkAPI.rejectWithValue(
-			error?.response.data.error || "Failed to fetch sent friend requests",
-		);
-	}
-});
-
-export const acceptFriendRequest = createAsyncThunk<
+export const unfriend = createAsyncThunk<
 	void,
-	string,
+	{ userName: string; friendUserName: string },
 	{ rejectValue: string }
->("user/acceptFriendRequest", async (friendRequestId, thunkAPI) => {
+>("user/unFriend", async ({ userName, friendUserName }, thunkAPI) => {
 	try {
-		const response = await axios.post(
-			`${BASE_URL}/friend-request/api/v1/friend-request/accept-friend-request`,
-			{
-				friendRequestId,
-			},
-		);
-		console.log(response.data);
+		await axios.post(`${BASE_URL}/user/api/v1/user/remove-friend`, {
+			userName,
+			friendUserName,
+		});
 	} catch (error: any) {
 		return thunkAPI.rejectWithValue(
 			error?.response.data.error || "Failed to fetch sent friend requests",
@@ -179,86 +114,41 @@ export const userSlice = createSlice({
 		builder
 			// signInUser loading states
 			.addCase(signInUser.pending, (state) => {
-				state.isLoading.auth = true;
+				state.isLoading = true;
 			})
 			.addCase(signInUser.fulfilled, (state, action: PayloadAction<string>) => {
 				state.user = action.payload;
-				state.isLoading.auth = false;
+				state.isLoading = false;
 				localStorage.setItem("user", action.payload);
 			})
 			.addCase(signInUser.rejected, (state, action) => {
-				state.isLoading.auth = false;
+				state.isLoading = false;
 				state.error = action.payload as string;
 			})
 			// signUpUser loading states
 			.addCase(signUpUser.pending, (state) => {
-				state.isLoading.auth = true;
+				state.isLoading = true;
 			})
 			.addCase(signUpUser.fulfilled, (state, action: PayloadAction<string>) => {
 				state.user = action.payload;
-				state.isLoading.auth = false;
+				state.isLoading = false;
 				localStorage.setItem("user", action.payload);
 			})
 			.addCase(signUpUser.rejected, (state, action) => {
-				state.isLoading.auth = false;
+				state.isLoading = false;
 				state.error = action.payload as string;
 			})
 			// signOutUser loading states
 			.addCase(signOutUser.pending, (state) => {
-				state.isLoading.auth = true;
+				state.isLoading = true;
 			})
 			.addCase(signOutUser.fulfilled, (state) => {
-				state.isLoading.auth = false;
+				state.isLoading = false;
 				localStorage.removeItem("user");
 				Object.assign(state, initialState); // reset state
 			})
 			.addCase(signOutUser.rejected, (state, action) => {
-				state.isLoading.auth = false;
-				state.error = action.payload as string;
-			})
-			// getAllFriends loading states
-			.addCase(getAllFriends.pending, (state) => {
-				state.isLoading.friends = true;
-			})
-			.addCase(
-				getAllFriends.fulfilled,
-				(state, action: PayloadAction<string[]>) => {
-					state.friends = action.payload;
-					state.isLoading.friends = false;
-				},
-			)
-			.addCase(getAllFriends.rejected, (state, action) => {
-				state.isLoading.friends = false;
-				state.error = action.payload as string;
-			})
-			// getReceivedFriendRequests loading states
-			.addCase(getReceivedFriendRequests.pending, (state) => {
-				state.isLoading.request = true;
-			})
-			.addCase(
-				getReceivedFriendRequests.fulfilled,
-				(state, action: PayloadAction<ReceivedFriendRequest[]>) => {
-					state.requestReceived = action.payload;
-					state.isLoading.request = false;
-				},
-			)
-			.addCase(getReceivedFriendRequests.rejected, (state, action) => {
-				state.isLoading.request = false;
-				state.error = action.payload as string;
-			})
-			// getSentFriendRequests loading states
-			.addCase(getSentFriendRequests.pending, (state) => {
-				state.isLoading.request = true;
-			})
-			.addCase(
-				getSentFriendRequests.fulfilled,
-				(state, action: PayloadAction<FriendRequest[]>) => {
-					state.requestSent = action.payload;
-					state.isLoading.request = false;
-				},
-			)
-			.addCase(getSentFriendRequests.rejected, (state, action) => {
-				state.isLoading.request = false;
+				state.isLoading = false;
 				state.error = action.payload as string;
 			})
 			// validateSession loading states
@@ -274,6 +164,12 @@ export const userSlice = createSlice({
 			.addCase(validateSession.rejected, (state, action) => {
 				localStorage.removeItem("user");
 				state.user = "";
+			})
+			.addCase(unfriend.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(unfriend.fulfilled, (state) => {
+				state.isLoading = false;
 			});
 	},
 });

@@ -1,7 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { acceptFriendRequest } from "@/redux/slices/userSlice";
+import { toast } from "@/hooks/use-toast";
+import { acceptFriendRequest } from "@/redux/slices/friendSlice";
 import { useAppDispatch } from "@/redux/store";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { CgProfile } from "react-icons/cg";
 
@@ -15,17 +17,20 @@ function RequestCard({
 	type?: "received" | "sent";
 }) {
 	const dispatch = useAppDispatch();
+	const router = useRouter();
 
-	async function handleAcceptFriend(friendRequestId: string) {
+	async function handleAcceptFriendRequest(friendRequestId: string) {
 		dispatch(acceptFriendRequest(friendRequestId))
 			.unwrap()
 			.then(() => {
-				window.location.reload();
+				router.refresh();
 			})
 			.catch((error) => {
-				console.error("Failed to accept friend request:", error);
+				toast({ description: error });
 			});
 	}
+
+	function handleIgnoreFriendRequest(friendRequestId: string) {}
 
 	return (
 		<div className="w-[500px] my-1 py-1 px-1 rounded-md flex justify-between bg-neutral-800 hover:bg-neutral-900">
@@ -38,13 +43,13 @@ function RequestCard({
 					<>
 						<Button
 							className="bg-primary-500 h-8 px-2"
-							onClick={() => handleAcceptFriend(id)}
+							onClick={() => handleAcceptFriendRequest(id)}
 						>
 							Accept
 						</Button>
 						<Button
 							className="bg-transparent hover:bg-red-800 h-8 px-2"
-							onClick={() => handleAcceptFriend(id)}
+							onClick={() => handleIgnoreFriendRequest(id)}
 						>
 							Ignore
 						</Button>

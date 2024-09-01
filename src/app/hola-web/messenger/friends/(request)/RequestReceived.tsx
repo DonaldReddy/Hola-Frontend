@@ -2,13 +2,13 @@
 import React, { useEffect, useRef } from "react";
 import RequestCard from "./RequestCard";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { getReceivedFriendRequests } from "@/redux/slices/userSlice";
+import { getReceivedFriendRequests } from "@/redux/slices/friendSlice";
 import { AiOutlineLoading } from "react-icons/ai";
 
 function RequestReceived() {
-	const requests = useAppSelector((s) => s.userReducer.requestReceived);
+	const requests = useAppSelector((s) => s.friendSlice.requestReceived);
 	const user = useAppSelector((s) => s.userReducer.user);
-	const isLoading = useAppSelector((s) => s.userReducer.isLoading);
+	const isLoading = useAppSelector((s) => s.friendSlice.isLoading);
 	const abortControllerRef = useRef<AbortController | null>(null);
 	const dispatch = useAppDispatch();
 
@@ -41,7 +41,7 @@ function RequestReceived() {
 
 	return (
 		<div className="flex h-[70svh] justify-center items-center">
-			{isLoading.friends ? (
+			{isLoading ? (
 				<AiOutlineLoading className="animate-spin" size={30} />
 			) : requests.length > 0 ? ( // Add a safeguard check
 				<div className="flex h-[56svh] rounded-md flex-col p-1 overflow-y-scroll items-center chat-card">

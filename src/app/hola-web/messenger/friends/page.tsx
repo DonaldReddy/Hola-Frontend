@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import Friends from "./(friend)/Friends";
-import FriendRequest from "./(friend)/FriendRequest";
+import FriendRequest from "./(request)/FriendRequest";
 import People from "./(people)/People";
 
 function Page({
@@ -22,7 +22,7 @@ function Page({
 	return (
 		<div className="h-[95%] flex justify-center items-center">
 			<Tabs
-				defaultValue={currentTab}
+				value={currentTab}
 				className="bg-zinc-900 rounded-md h-[90%] w-[90%] pt-2 flex flex-col items-center"
 			>
 				<TabsList className="w-[50%] bg-zinc-600 ">

@@ -24,7 +24,7 @@ function Page() {
 	const isLoading = useAppSelector((s) => s.userReducer.isLoading);
 	const router = useRouter();
 	const hideButton =
-		isLoading.auth ||
+		isLoading ||
 		!(signUpInfo.password && signUpInfo.userName && signUpInfo.name);
 
 	useEffect(() => {
@@ -154,7 +154,7 @@ function Page() {
 					)}
 
 					<div className="mt-8 flex justify-center">
-						{!isLoading.auth && (
+						{!isLoading && (
 							<button
 								type="submit"
 								className={`border border-slate-50 rounded-md px-4 py-1 text-xs md:text-sm hover:bg-hover-primary ${
@@ -165,7 +165,7 @@ function Page() {
 								Sign up
 							</button>
 						)}
-						{isLoading.auth && <AiOutlineLoading className=" animate-spin" />}
+						{isLoading && <AiOutlineLoading className=" animate-spin" />}
 					</div>
 				</form>
 				<Link
