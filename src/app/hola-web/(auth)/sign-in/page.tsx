@@ -93,15 +93,15 @@ function Page() {
 						<button
 							type="submit"
 							className={`border border-slate-50 rounded-md px-4 py-1 text-xs md:text-sm hover:bg-hover-primary ${
-								isLoading.auth || !(signInInfo.password && signInInfo.userName)
+								isLoading || !(signInInfo.password && signInInfo.userName)
 									? "opacity-30"
 									: ""
 							}`}
 							disabled={
-								isLoading.auth || !(signInInfo.password && signInInfo.userName)
+								isLoading || !(signInInfo.password && signInInfo.userName)
 							}
 						>
-							{isLoading.auth ? (
+							{isLoading ? (
 								<AiOutlineLoading className="animate-spin" />
 							) : (
 								"Sign in"

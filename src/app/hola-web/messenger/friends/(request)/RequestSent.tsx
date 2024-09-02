@@ -44,11 +44,11 @@ function RequestSent() {
 	}, [user, dispatch]);
 
 	return (
-		<div className="flex h-[77svh] justify-center items-center">
+		<div className="flex h-[70svh] justify-center items-center pt-2">
 			{isLoading ? (
 				<AiOutlineLoading className="animate-spin" size={30} />
-			) : requests.length > 0 ? ( // Add a safeguard check
-				<div className="flex h-[56svh] rounded-md flex-col p-1 overflow-y-scroll items-center chat-card">
+			) : requests.length > 0 ? (
+				<div className="flex h-full rounded-md flex-col p-1 overflow-y-scroll items-center chat-card ">
 					{requests.map((request) => (
 						<div key={request.requestId}>
 							<RequestCard
@@ -61,7 +61,7 @@ function RequestSent() {
 					))}
 				</div>
 			) : (
-				<div>No Friend Requests Yet</div> // Adjusted the message to be more specific
+				<div>No Friend Requests Yet</div>
 			)}
 		</div>
 	);

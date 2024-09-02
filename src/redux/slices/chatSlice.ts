@@ -5,13 +5,19 @@ import { Chat } from "@/types";
 
 type InitialState = {
 	recentChats: Chat[];
-	selectedChat: string;
+	selectedChat: Chat;
 	isLoading: boolean;
 };
 
 const initialState: InitialState = {
 	recentChats: [],
-	selectedChat: "",
+	selectedChat: {
+		chatId: "",
+		lastMessageAt: "",
+		chatType: "",
+		participants: [],
+		groupName: "",
+	},
 	isLoading: false,
 };
 
@@ -71,11 +77,11 @@ export const chatSlice = createSlice({
 	name: "chats",
 	initialState,
 	reducers: {
-		selectChat: (state, action: PayloadAction<string>) => {
+		selectChat: (state, action: PayloadAction<Chat>) => {
 			state.selectedChat = action.payload;
 		},
 		unSelectChat: (state) => {
-			state.selectedChat = "";
+			state.selectedChat = initialState.selectedChat;
 		},
 	},
 	extraReducers: (builder) => {

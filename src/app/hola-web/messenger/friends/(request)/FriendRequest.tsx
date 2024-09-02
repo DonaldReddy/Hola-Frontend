@@ -17,7 +17,7 @@ function FriendRequest({ searchParams }: { searchParams: { type: string } }) {
 			<TabsList className=" w-1/2  bg-zinc-600 m-0 p-0 gap-0">
 				<TabsTrigger
 					value="received"
-					className="w-1/2 mx-1 bg-zinc-700 text-slate-300 data-[state=active]:bg-primary data-[state=active]:text-slate-50"
+					className="w-1/2 mx-1 bg-zinc-700 text-slate-300 data-[state=active]:bg-black data-[state=active]:text-slate-50"
 					asChild
 				>
 					<Link
@@ -34,7 +34,7 @@ function FriendRequest({ searchParams }: { searchParams: { type: string } }) {
 				</TabsTrigger>
 				<TabsTrigger
 					value="sent"
-					className="w-1/2 mx-1 bg-zinc-700 text-neutral-200 data-[state=active]:bg-primary data-[state=active]:text-white"
+					className="w-1/2 mx-1 bg-zinc-700 text-neutral-200 data-[state=active]:bg-black data-[state=active]:text-white"
 					asChild
 				>
 					<Link

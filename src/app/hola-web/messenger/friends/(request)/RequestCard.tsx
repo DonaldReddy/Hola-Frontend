@@ -57,7 +57,7 @@ function RequestCard({
 				)}
 				{type == "sent" && (
 					<Button className="bg-transparent hover:bg-red-800 h-8 px-2">
-						Delete
+						Withdraw
 					</Button>
 				)}
 			</div>

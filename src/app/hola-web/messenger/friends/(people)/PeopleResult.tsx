@@ -14,7 +14,7 @@ function PeopleResult() {
 	useEffect(() => {
 		const search = searchParams.get("search") || "";
 		const timeout = setTimeout(() => {
-			if (search) dispatch(getUsers({ user, search }));
+			if (search) dispatch(getUsers(search));
 			else dispatch(clearPeople());
 		}, 500);
 		return () => clearTimeout(timeout);
@@ -23,7 +23,11 @@ function PeopleResult() {
 	return (
 		<div className="h-full w-full overflow-y-scroll chat-card">
 			{people.map((user) => (
-				<PeopleCard name={user.name} userName={user.userName} />
+				<PeopleCard
+					name={user.name}
+					userName={user.userName}
+					key={user.userName}
+				/>
 			))}
 		</div>
 	);

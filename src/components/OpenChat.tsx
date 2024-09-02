@@ -111,7 +111,7 @@ function OpenChat() {
 					{
 						messageId: (conversationData.length + 1).toString(),
 						sender: user,
-						receiver: selectedChat.userName,
+						receiver: selectedChat.participants[0],
 						message: trimmedMessage,
 						timestamp: new Date().toISOString(),
 					},
@@ -121,7 +121,7 @@ function OpenChat() {
 		}
 	}
 
-	if (!selectedChat.userName)
+	if (!selectedChat.participants[0])
 		return (
 			<div className="flex md:w-[60%] lg:w-[70%] justify-center items-center">
 				select a chat to start messaging
@@ -137,7 +137,7 @@ function OpenChat() {
 					<div className="flex items-center gap-2">
 						<CgProfile size={40} />
 						<div>
-							<h2>{selectedChat.userName}</h2>
+							<h2>{selectedChat.participants[0]}</h2>
 							<h5 className="text-sm text-gray-500">last seen at 12:00 am</h5>
 						</div>
 					</div>
