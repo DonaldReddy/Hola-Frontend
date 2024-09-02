@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { FriendRequest, ReceivedFriendRequest } from "@/types";
 
 type InitialState = {
 	user: string;

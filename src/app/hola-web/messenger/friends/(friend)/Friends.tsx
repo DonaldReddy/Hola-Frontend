@@ -13,9 +13,7 @@ function Friends() {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		console.log("friend");
-
-		if (user && friends.length === 0) {
+		if (user && friends.length == 0) {
 			if (abortControllerRef.current) {
 				// Cancel the previous API call
 				abortControllerRef.current.abort();
@@ -27,11 +25,6 @@ function Friends() {
 				.unwrap()
 				.then(() => {
 					abortControllerRef.current = null; // Clear the controller after the call is complete
-				})
-				.catch((error) => {
-					if (error.name !== "AbortError") {
-						console.error("Error fetching friends:", error);
-					}
 				});
 		}
 		return () => {
@@ -44,16 +37,16 @@ function Friends() {
 
 	return (
 		<div className="flex h-[70svh] justify-center items-center">
-			{isLoading ? (
+			{isLoading.friend ? (
 				<AiOutlineLoading className="animate-spin" size={30} />
-			) : friends?.length > 0 ? (
+			) : friends.length > 0 ? (
 				<div className="flex h-[70svh] flex-col p-1 overflow-y-scroll items-center chat-card">
 					{friends.map((friend) => (
 						<FriendCard key={friend} friendUserName={friend} />
 					))}
 				</div>
 			) : (
-				<div>No Friends Yet</div>
+				<div>No friends yet</div>
 			)}
 		</div>
 	);

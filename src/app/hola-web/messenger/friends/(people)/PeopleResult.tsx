@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import PeopleCard from "./PeopleCard";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { clearPeople, getUsers } from "@/redux/slices/friendSlice";
+import { clearSearchResults, getUsers } from "@/redux/slices/friendSlice";
 
 function PeopleResult() {
 	const searchParams = useSearchParams();
@@ -15,7 +15,7 @@ function PeopleResult() {
 		const search = searchParams.get("search") || "";
 		const timeout = setTimeout(() => {
 			if (search) dispatch(getUsers(search));
-			else dispatch(clearPeople());
+			else dispatch(clearSearchResults());
 		}, 500);
 		return () => clearTimeout(timeout);
 	}, [searchParams]);

@@ -20,12 +20,12 @@ function Page({
 	}
 
 	return (
-		<div className="h-[95%] flex justify-center items-center">
+		<div className="h-[95svh] flex justify-center items-center">
 			<Tabs
 				value={currentTab}
-				className="bg-zinc-900 rounded-md h-[90%] w-[90%] pt-2 flex flex-col items-center"
+				className="bg-zinc-900 rounded-md h-[90svh] w-[90%] pt-2 flex flex-col items-center"
 			>
-				<TabsList className="w-[50%] bg-zinc-600 ">
+				<TabsList className="w-[80svw] bg-zinc-600 ">
 					<TabsTrigger
 						value="friends"
 						className="w-1/2 mx-1 bg-zinc-700 text-neutral-200 data-[state=active]:bg-primary data-[state=active]:text-white"

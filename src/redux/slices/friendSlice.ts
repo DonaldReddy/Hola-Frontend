@@ -5,7 +5,11 @@ import { FriendRequest, ReceivedFriendRequest } from "@/types";
 type User = { name: string; userName: string };
 
 type InitialState = {
-	isLoading: boolean;
+	isLoading: {
+		friend: boolean;
+		requestSent: boolean;
+		requestReceived: boolean;
+	};
 	friends: string[];
 	requestSent: FriendRequest[];
 	requestReceived: ReceivedFriendRequest[];
@@ -15,7 +19,7 @@ type InitialState = {
 
 const initialState: InitialState = {
 	friends: [],
-	isLoading: false,
+	isLoading: { friend: false, requestSent: false, requestReceived: false },
 	requestSent: [],
 	requestReceived: [],
 	people: [],
@@ -35,8 +39,11 @@ export const getAllFriends = createAsyncThunk<
 			{ signal },
 		);
 
+		await new Promise((resolve) => setTimeout(resolve, 5000));
+
 		return response.data.friends;
 	} catch (error: any) {
+		if (axios.isAxiosError(error)) return;
 		return thunkAPI.rejectWithValue(
 			error?.response?.data?.error || "Failed to fetch friends",
 		);
@@ -49,13 +56,14 @@ export const getReceivedFriendRequests = createAsyncThunk<
 	{ rejectValue: string }
 >("friend/getReceivedFriendRequests", async ({ user, signal }, thunkAPI) => {
 	try {
+		await new Promise((resolve) => setTimeout(resolve, 5000));
 		const response = await axios.get(
 			`${BASE_URL}/friend-request/api/v1/friend-request/get-received-friend-requests?userName=${user}`,
 			{ signal },
 		);
-
 		return response.data.friendRequests;
 	} catch (error: any) {
+		if (axios.isAxiosError(error)) return;
 		return thunkAPI.rejectWithValue(
 			error?.response?.data.error || "Failed to fetch received friend requests",
 		);
@@ -72,8 +80,10 @@ export const getSentFriendRequests = createAsyncThunk<
 			`${BASE_URL}/friend-request/api/v1/friend-request/get-sent-friend-requests?userName=${user}`,
 			{ signal },
 		);
-		return response?.data.friendRequests;
+		await new Promise((resolve) => setTimeout(resolve, 5000));
+		return response.data.friendRequests;
 	} catch (error: any) {
+		if (axios.isAxiosError(error)) return;
 		return thunkAPI.rejectWithValue(
 			error?.response?.data.error || "Failed to fetch sent friend requests",
 		);
@@ -145,7 +155,7 @@ export const friendSlice = createSlice({
 		clearError: (state) => {
 			state.error = null;
 		},
-		clearPeople: (state) => {
+		clearSearchResults: (state) => {
 			state.people = [];
 		},
 	},
@@ -153,47 +163,55 @@ export const friendSlice = createSlice({
 		builder
 			// getAllFriends loading states
 			.addCase(getAllFriends.pending, (state) => {
-				state.isLoading = true;
+				state.isLoading.friend = true;
 			})
 			.addCase(
 				getAllFriends.fulfilled,
 				(state, action: PayloadAction<string[]>) => {
-					state.friends = action.payload;
-					state.isLoading = false;
+					if (action.payload) {
+						state.friends = action.payload;
+						state.isLoading.friend = false;
+					}
 				},
 			)
 			.addCase(getAllFriends.rejected, (state, action) => {
-				state.isLoading = false;
+				state.isLoading.friend = false;
 				state.error = action.payload as string;
 			})
 			// getReceivedFriendRequests loading states
 			.addCase(getReceivedFriendRequests.pending, (state) => {
-				state.isLoading = true;
+				state.isLoading.requestReceived = true;
 			})
 			.addCase(
 				getReceivedFriendRequests.fulfilled,
-				(state, action: PayloadAction<ReceivedFriendRequest[]>) => {
-					state.requestReceived = action.payload;
-					state.isLoading = false;
+				(state, action: PayloadAction<any[]>) => {
+					console.log(action.payload);
+
+					if (action.payload) {
+						state.requestReceived = action.payload;
+						state.isLoading.requestReceived = false;
+					}
 				},
 			)
 			.addCase(getReceivedFriendRequests.rejected, (state, action) => {
-				state.isLoading = false;
+				state.isLoading.requestReceived = false;
 				state.error = action.payload as string;
 			})
 			// getSentFriendRequests loading states
 			.addCase(getSentFriendRequests.pending, (state) => {
-				state.isLoading = true;
+				state.isLoading.requestSent = true;
 			})
 			.addCase(
 				getSentFriendRequests.fulfilled,
-				(state, action: PayloadAction<FriendRequest[]>) => {
-					state.requestSent = action.payload;
-					state.isLoading = false;
+				(state, action: PayloadAction<any[]>) => {
+					if (action.payload) {
+						state.requestSent = action.payload;
+						state.isLoading.requestSent = false;
+					}
 				},
 			)
 			.addCase(getSentFriendRequests.rejected, (state, action) => {
-				state.isLoading = false;
+				state.isLoading.requestSent = false;
 				state.error = action.payload as string;
 			})
 			.addCase(getUsers.fulfilled, (state, action: PayloadAction<User[]>) => {
@@ -203,4 +221,4 @@ export const friendSlice = createSlice({
 });
 
 export default friendSlice.reducer;
-export const { clearError, clearPeople } = friendSlice.actions;
+export const { clearError, clearSearchResults } = friendSlice.actions;

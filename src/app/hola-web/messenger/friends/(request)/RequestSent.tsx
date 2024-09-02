@@ -27,11 +27,6 @@ function RequestSent() {
 				.unwrap()
 				.then(() => {
 					abortControllerRef.current = null; // Clear the controller after the call is complete
-				})
-				.catch((error) => {
-					if (error.name !== "AbortError") {
-						console.error("Error fetching friend requests:", error);
-					}
 				});
 		}
 
@@ -45,19 +40,17 @@ function RequestSent() {
 
 	return (
 		<div className="flex h-[70svh] justify-center items-center pt-2">
-			{isLoading ? (
+			{isLoading.requestSent ? (
 				<AiOutlineLoading className="animate-spin" size={30} />
 			) : requests.length > 0 ? (
 				<div className="flex h-full rounded-md flex-col p-1 overflow-y-scroll items-center chat-card ">
 					{requests.map((request) => (
-						<div key={request.requestId}>
-							<RequestCard
-								userName={request.to}
-								key={request.requestId}
-								id={request.requestId}
-								type="sent"
-							/>
-						</div>
+						<RequestCard
+							userName={request.to}
+							id={request.requestId}
+							key={request.requestId}
+							type="sent"
+						/>
 					))}
 				</div>
 			) : (

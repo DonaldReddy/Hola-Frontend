@@ -32,7 +32,7 @@ function Restrict({ children }: { children: React.ReactNode }) {
 					height={100}
 					alt="computer"
 				/>
-				Open in Desktop
+				Open in Desktop view
 			</div>
 		);
 	return <>{children}</>;

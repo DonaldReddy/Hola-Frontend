@@ -18,6 +18,7 @@ export default function layout({ children }: { children: ReactNode }) {
 		<ReduxProvider>
 			<Init />
 			<Restrict>{children}</Restrict>
+			{/* {children} */}
 		</ReduxProvider>
 	);
 }
