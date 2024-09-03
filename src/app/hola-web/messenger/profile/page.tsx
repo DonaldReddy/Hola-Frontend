@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getFallBack } from "@/utils/main";
 import { getProfile } from "@/redux/slices/userSlice";
 
-function page() {
+function Page() {
 	const userInfo = useAppSelector((s) => s.userReducer);
 	const dispatch = useAppDispatch();
 
@@ -40,4 +40,4 @@ function page() {
 	);
 }
 
-export default page;
+export default Page;

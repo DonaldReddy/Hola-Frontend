@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import PeopleCard from "./PeopleCard";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { clearSearchResults, getUsers } from "@/redux/slices/friendSlice";
@@ -14,13 +14,13 @@ function PeopleResult() {
 	const friends = useAppSelector((s) => s.friendSlice.friends);
 	const requests = useAppSelector((s) => s.friendSlice.requestSent);
 	const isLoading = useAppSelector((s) => s.friendSlice.isLoading.people);
-	let timeoutId: NodeJS.Timeout | null = null;
+	let timeout = useRef<NodeJS.Timeout | null>(null);
 
 	useEffect(() => {
 		const search = searchParams.get("search") || "";
-		if (timeoutId) clearTimeout(timeoutId);
+		if (timeout.current) clearTimeout(timeout.current);
 
-		timeoutId = setTimeout(() => {
+		timeout.current = setTimeout(() => {
 			if (search) {
 				dispatch(getUsers(search));
 			} else {
@@ -29,7 +29,7 @@ function PeopleResult() {
 		}, 200);
 
 		return () => {
-			if (timeoutId) clearTimeout(timeoutId);
+			if (timeout.current) clearTimeout(timeout.current);
 		};
 	}, [searchParams, dispatch]);
 

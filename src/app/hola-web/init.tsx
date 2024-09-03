@@ -27,7 +27,7 @@ function Init() {
 		window.addEventListener("resize", handleResize);
 
 		return () => window.removeEventListener("resize", handleResize);
-	}, [dispatch]);
+	}, [dispatch, user]);
 
 	// Validate user session and redirect to login page if validation fails
 	useEffect(() => {
