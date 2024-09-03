@@ -31,11 +31,11 @@ function RequestCard({
 				router.refresh();
 				toast({
 					description: "Friend request Accepted",
-					duration: 2000,
+					duration: 3000,
 				});
 			})
 			.catch((error) => {
-				toast({ description: error, variant: "destructive", duration: 2000 });
+				toast({ description: error, variant: "destructive", duration: 3000 });
 			});
 	}
 
@@ -46,11 +46,11 @@ function RequestCard({
 				router.refresh();
 				toast({
 					description: "Friend request Sent",
-					duration: 2000,
+					duration: 3000,
 				});
 			})
 			.catch((error) => {
-				toast({ description: error, variant: "destructive", duration: 2000 });
+				toast({ description: error, variant: "destructive", duration: 3000 });
 			});
 	}
 
@@ -61,11 +61,11 @@ function RequestCard({
 				router.refresh();
 				toast({
 					description: "Friend request withdrawn successfully",
-					duration: 2000,
+					duration: 3000,
 				});
 			})
 			.catch((error) => {
-				toast({ description: error, variant: "destructive", duration: 2000 });
+				toast({ description: error, variant: "destructive", duration: 3000 });
 			});
 	}
 
@@ -79,7 +79,7 @@ function RequestCard({
 							className="h-full w-full "
 						/>
 						<AvatarFallback
-							delayMs={2000}
+							delayMs={3000}
 							className="bg-primary h-full w-full flex justify-center items-center rounded-full"
 						>
 							{getFallBack(userName)}

@@ -23,7 +23,7 @@ function Page() {
 							className="h-full w-full "
 						/>
 						<AvatarFallback
-							delayMs={2000}
+							delayMs={3000}
 							className="bg-primary h-full w-full flex justify-center items-center rounded-full"
 						>
 							{getFallBack(userInfo.name || "")}

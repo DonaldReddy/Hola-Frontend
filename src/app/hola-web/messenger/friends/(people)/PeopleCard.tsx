@@ -33,7 +33,7 @@ function PeopleCard({
 		dispatch(sendFriendRequest({ userName: user, friendUserName: userName }))
 			.unwrap()
 			.then(() => {
-				toast({ description: "Friend request sent" });
+				toast({ description: "Friend request sent", duration: 3000 });
 			})
 			.catch((error) => {
 				toast({ description: error, variant: "destructive", duration: 3000 });
@@ -54,7 +54,7 @@ function PeopleCard({
 							className="h-full w-full "
 						/>
 						<AvatarFallback
-							delayMs={2000}
+							delayMs={3000}
 							className="bg-primary h-full w-full flex justify-center items-center rounded-full"
 						>
 							{getFallBack(user)}
