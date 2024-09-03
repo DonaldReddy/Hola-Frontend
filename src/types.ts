@@ -1,3 +1,5 @@
+export type User = { name: string; userName: string; numberOfFriends: number };
+
 export type Chat = {
 	chatId: string;
 	lastMessageAt: string;

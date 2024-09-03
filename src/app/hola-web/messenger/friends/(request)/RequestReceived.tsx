@@ -33,8 +33,6 @@ function RequestReceived() {
 
 		return () => {
 			// Cancel the request if the component unmounts
-			console.log("received unmount");
-
 			if (abortControllerRef.current) {
 				abortControllerRef.current.abort();
 			}
@@ -42,11 +40,11 @@ function RequestReceived() {
 	}, [user, dispatch]);
 
 	return (
-		<div className="flex h-[70svh] justify-center items-center pt-2">
+		<div className="h-[70svh] w-[90svw] overflow-y-scroll chat-card flex justify-center items-center">
 			{isLoading.requestReceived ? (
 				<AiOutlineLoading className="animate-spin" size={30} />
 			) : requests.length > 0 ? (
-				<div className="flex h-full rounded-md flex-col p-1 overflow-y-scroll items-center chat-card">
+				<div className="h-full w-full">
 					{requests.map((request) => (
 						<RequestCard
 							userName={request.from}
@@ -56,7 +54,7 @@ function RequestReceived() {
 					))}
 				</div>
 			) : (
-				<div>No Friend Requests Yet</div>
+				<div>No Friend Requests yet</div>
 			)}
 		</div>
 	);

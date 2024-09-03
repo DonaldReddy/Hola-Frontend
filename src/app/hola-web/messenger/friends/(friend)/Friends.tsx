@@ -1,53 +1,12 @@
-"use client";
-import React, { useEffect, useRef } from "react";
-import FriendCard from "./FriendCard";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { getAllFriends } from "@/redux/slices/friendSlice";
-import { AiOutlineLoading } from "react-icons/ai";
+import React from "react";
+import SearchBar from "@/components/SearchBar";
+import FriendsResult from "./FriendsResult";
 
 function Friends() {
-	const friends = useAppSelector((s) => s.friendSlice.friends);
-	const isLoading = useAppSelector((s) => s.friendSlice.isLoading);
-	const user = useAppSelector((s) => s.userReducer.user);
-	const abortControllerRef = useRef<AbortController | null>(null);
-	const dispatch = useAppDispatch();
-
-	useEffect(() => {
-		if (user && friends.length == 0) {
-			if (abortControllerRef.current) {
-				// Cancel the previous API call
-				abortControllerRef.current.abort();
-			}
-			// Create a new AbortController for the new API call
-			const controller = new AbortController();
-			abortControllerRef.current = controller;
-			dispatch(getAllFriends({ user, signal: controller.signal }))
-				.unwrap()
-				.then(() => {
-					abortControllerRef.current = null; // Clear the controller after the call is complete
-				});
-		}
-		return () => {
-			// Cancel the request if the component unmounts
-			if (abortControllerRef.current) {
-				abortControllerRef.current.abort();
-			}
-		};
-	}, [user, dispatch]);
-
 	return (
-		<div className="flex h-[70svh] justify-center items-center">
-			{isLoading.friend ? (
-				<AiOutlineLoading className="animate-spin" size={30} />
-			) : friends.length > 0 ? (
-				<div className="flex h-[70svh] flex-col p-1 overflow-y-scroll items-center chat-card">
-					{friends.map((friend) => (
-						<FriendCard key={friend} friendUserName={friend} />
-					))}
-				</div>
-			) : (
-				<div>No friends yet</div>
-			)}
+		<div className="h-[80svh] w-[90svw] pt-1 flex flex-col justify-between items-center rounded-md ">
+			<SearchBar />
+			<div className="h-[90%] w-full  rounded-md ">{<FriendsResult />}</div>
 		</div>
 	);
 }

@@ -1,11 +1,16 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { acceptFriendRequest } from "@/redux/slices/friendSlice";
+import {
+	acceptFriendRequest,
+	ignoreFriendRequest,
+	withdrawFriendRequest,
+} from "@/redux/slices/friendSlice";
 import { useAppDispatch } from "@/redux/store";
+import { getFallBack } from "@/utils/main";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { CgProfile } from "react-icons/cg";
 
 function RequestCard({
 	userName,
@@ -24,19 +29,66 @@ function RequestCard({
 			.unwrap()
 			.then(() => {
 				router.refresh();
+				toast({
+					description: "Friend request Accepted",
+					duration: 2000,
+				});
 			})
 			.catch((error) => {
-				toast({ description: error });
+				toast({ description: error, variant: "destructive", duration: 2000 });
 			});
 	}
 
-	function handleIgnoreFriendRequest(friendRequestId: string) {}
+	function handleIgnoreFriendRequest(friendRequestId: string) {
+		dispatch(ignoreFriendRequest(friendRequestId))
+			.unwrap()
+			.then(() => {
+				router.refresh();
+				toast({
+					description: "Friend request Sent",
+					duration: 2000,
+				});
+			})
+			.catch((error) => {
+				toast({ description: error, variant: "destructive", duration: 2000 });
+			});
+	}
+
+	function handleWithdrawFriendRequest(friendRequestId: string) {
+		dispatch(withdrawFriendRequest(friendRequestId))
+			.unwrap()
+			.then(() => {
+				router.refresh();
+				toast({
+					description: "Friend request withdrawn successfully",
+					duration: 2000,
+				});
+			})
+			.catch((error) => {
+				toast({ description: error, variant: "destructive", duration: 2000 });
+			});
+	}
 
 	return (
-		<div className="w-[500px] my-1 py-1 px-1 rounded-md flex justify-between bg-neutral-800 hover:bg-neutral-900">
-			<div className="flex justify-center items-center gap-1">
-				<CgProfile size={30} />
-				{userName}
+		<div className="flex items-center justify-between p-2 pr-10 hover:bg-primary-700 border-b border-b-zinc-500 last:border-b-0">
+			<div className="flex  items-center gap-2">
+				<div className="w-10 h-10 ">
+					<Avatar className="h-full w-full ">
+						<AvatarImage
+							src={`https://api.dicebear.com/9.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=${userName}&radius=50`}
+							className="h-full w-full "
+						/>
+						<AvatarFallback
+							delayMs={2000}
+							className="bg-primary h-full w-full flex justify-center items-center rounded-full"
+						>
+							{getFallBack(userName)}
+						</AvatarFallback>
+					</Avatar>
+				</div>
+				<div className="">
+					<h1 className="text-sm">{userName}</h1>
+				</div>
 			</div>
 			<div className="flex gap-2 items-center">
 				{type == "received" && (
@@ -56,7 +108,10 @@ function RequestCard({
 					</>
 				)}
 				{type == "sent" && (
-					<Button className="bg-transparent hover:bg-red-800 h-8 px-2">
+					<Button
+						className="bg-transparent hover:bg-red-800 h-8 px-2"
+						onClick={() => handleWithdrawFriendRequest(id)}
+					>
 						Withdraw
 					</Button>
 				)}

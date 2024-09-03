@@ -1,3 +1,4 @@
+import { User } from "@/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -5,12 +6,16 @@ type InitialState = {
 	user: string;
 	isLoading: boolean;
 	error: string | null;
+	name: string;
+	numberOfFriends: number;
 };
 
 const initialState: InitialState = {
 	user: "",
 	isLoading: false,
 	error: null,
+	name: "",
+	numberOfFriends: 0,
 };
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -32,6 +37,28 @@ export const validateSession = createAsyncThunk<
 	} catch (error: any) {
 		return thunkAPI.rejectWithValue(
 			error?.response.data.error || "Session validation is failed",
+		);
+	}
+});
+
+export const getProfile = createAsyncThunk<
+	User,
+	string,
+	{ rejectValue: string }
+>("user/getProfile", async (userName, thunkAPI) => {
+	try {
+		const { data } = await axios.get(
+			`${BASE_URL}/user/api/v1/user/get-profile?userName=${userName}`,
+		);
+		// return {
+		// 	name: data.name,
+		// 	userName: data.userName,
+		// 	numberOfFriends: data.numberOfFriends,
+		// };
+		return data.profile;
+	} catch (error: any) {
+		return thunkAPI.rejectWithValue(
+			error?.response.data.error || "Profile fetch failed",
 		);
 	}
 });
@@ -111,6 +138,13 @@ export const userSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
+			.addCase(getProfile.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(getProfile.fulfilled, (state, action: PayloadAction<User>) => {
+				state.name = action.payload.name;
+				state.numberOfFriends = action.payload.numberOfFriends;
+			})
 			// signInUser loading states
 			.addCase(signInUser.pending, (state) => {
 				state.isLoading = true;

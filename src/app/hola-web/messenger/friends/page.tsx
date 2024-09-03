@@ -4,11 +4,19 @@ import Link from "next/link";
 import Friends from "./(friend)/Friends";
 import FriendRequest from "./(request)/FriendRequest";
 import People from "./(people)/People";
+import { Metadata } from "next";
+import { Search } from "lucide-react";
+
+export function generateMetadata(): Metadata {
+	return {
+		title: "Friends",
+	};
+}
 
 function Page({
 	searchParams,
 }: {
-	searchParams: { tab: string; type: string };
+	searchParams: { tab: string; type: string; search: string };
 }) {
 	let currentTab = searchParams.tab || "friends";
 	if (
@@ -20,21 +28,24 @@ function Page({
 	}
 
 	return (
-		<div className="h-[95svh] flex justify-center items-center">
+		<div className="h-[95svh] w-svw flex justify-center items-center ">
 			<Tabs
 				value={currentTab}
-				className="bg-zinc-900 rounded-md h-[90svh] w-[90%] pt-2 flex flex-col items-center"
+				className="h-[90%] w-full flex flex-col justify-between items-center rounded-md"
 			>
-				<TabsList className="w-[80svw] bg-zinc-600 ">
+				<TabsList className="w-[95%] h-14 p-2 bg-neutral-900 flex justify-between gap-3">
 					<TabsTrigger
 						value="friends"
-						className="w-1/2 mx-1 bg-zinc-700 text-neutral-200 data-[state=active]:bg-primary data-[state=active]:text-white"
+						className="w-1/3 h-10 text-lg bg-neutral-950 text-neutral-200 data-[state=active]:bg-primary data-[state=active]:text-white"
 						asChild
 					>
 						<Link
 							href={{
 								query: {
 									tab: "friends",
+									...(currentTab === "friends" && searchParams.search
+										? { search: searchParams.search }
+										: {}),
 								},
 							}}
 							replace
@@ -44,13 +55,16 @@ function Page({
 					</TabsTrigger>
 					<TabsTrigger
 						value="people"
-						className="w-1/2 mx-1 bg-zinc-700 text-slate-300 data-[state=active]:bg-primary data-[state=active]:text-slate-50"
+						className="w-1/3 h-10 text-lg bg-neutral-950 text-neutral-200 data-[state=active]:bg-primary data-[state=active]:text-white"
 						asChild
 					>
 						<Link
 							href={{
 								query: {
 									tab: "people",
+									...(currentTab === "people" && searchParams.search
+										? { search: searchParams.search }
+										: {}),
 								},
 							}}
 							replace
@@ -60,7 +74,7 @@ function Page({
 					</TabsTrigger>
 					<TabsTrigger
 						value="friends-request"
-						className="w-1/2 mx-1 bg-zinc-700 text-slate-300 data-[state=active]:bg-primary data-[state=active]:text-slate-50"
+						className="w-1/3 h-10 text-lg bg-neutral-950 text-neutral-200 data-[state=active]:bg-primary data-[state=active]:text-white"
 						asChild
 					>
 						<Link
