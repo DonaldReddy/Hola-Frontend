@@ -19,10 +19,12 @@ function PeopleCard({
 	name,
 	userName,
 	status,
+	isSelected,
 }: {
 	name: string;
 	userName: string;
 	status: "sent" | "friend" | "not sent";
+	isSelected: boolean;
 }) {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
@@ -45,7 +47,11 @@ function PeopleCard({
 	}
 
 	return (
-		<div className="flex items-center justify-between p-2 pr-10 hover:bg-primary-700 border-b border-b-zinc-500 last:border-b-0">
+		<div
+			className={`flex items-center justify-between p-2 pr-10 hover:bg-primary-700 border-b border-b-zinc-500 last:border-b-0 ${
+				isSelected ? "bg-primary-700" : ""
+			}`}
+		>
 			<div className="flex items-center gap-2">
 				<div className="w-10 h-10 ">
 					<Avatar className="h-full w-full ">
@@ -70,17 +76,17 @@ function PeopleCard({
 				<div>
 					{status === "not sent" && (
 						<div className="cursor-pointer" onClick={handleSendFriendRequest}>
-							<IoPersonAddSharp size={20} />
+							<IoPersonAddSharp size={20} title="send request" />
 						</div>
 					)}
 					{status === "sent" && (
 						<div>
-							<BsFillPersonCheckFill size={20} />
+							<BsFillPersonCheckFill size={20} title="already sent" />
 						</div>
 					)}
 					{status === "friend" && (
 						<div className="cursor-pointer" onClick={navigateToChat}>
-							<BsChatSquareTextFill size={20} />
+							<BsChatSquareTextFill size={20} title="send message" />
 						</div>
 					)}
 				</div>

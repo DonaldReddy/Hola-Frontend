@@ -17,3 +17,11 @@ export type ReceivedFriendRequest = {
 	requestId: string;
 	timeStamp: string;
 };
+
+export type Message = {
+	messageId: string;
+	sender: string;
+	receiver: string;
+	message: string;
+	timestamp: Date;
+};

@@ -121,7 +121,7 @@ export const sendFriendRequest = createAsyncThunk<
 	"friend/sendFriendRequest",
 	async ({ userName, friendUserName }, thunkAPI) => {
 		try {
-			const response = await axios.post(
+			await axios.post(
 				`${BASE_URL}/friend-request/api/v1/friend-request/send-friend-request`,
 				{ userName, friendUserName },
 			);
@@ -135,17 +135,18 @@ export const sendFriendRequest = createAsyncThunk<
 );
 
 export const ignoreFriendRequest = createAsyncThunk<
-	void,
+	string,
 	string,
 	{ rejectValue: string }
 >("friend/ignoreFriendRequest", async (friendRequestId, thunkAPI) => {
 	try {
-		const response = await axios.post(
+		await axios.post(
 			`${BASE_URL}/friend-request/api/v1/friend-request/ignore-friend-request`,
 			{
 				friendRequestId,
 			},
 		);
+		return friendRequestId;
 	} catch (error: any) {
 		return thunkAPI.rejectWithValue(
 			error?.response.data.error || "Failed to fetch sent friend requests",
@@ -280,6 +281,14 @@ export const friendSlice = createSlice({
 				(state, action: PayloadAction<string>) => {
 					state.requestReceived = state.requestReceived.filter(
 						(request) => request.from != action.payload,
+					);
+				},
+			)
+			.addCase(
+				ignoreFriendRequest.fulfilled,
+				(state, action: PayloadAction<string>) => {
+					state.requestReceived = state.requestReceived.filter(
+						(request) => request.requestId != action.payload,
 					);
 				},
 			)

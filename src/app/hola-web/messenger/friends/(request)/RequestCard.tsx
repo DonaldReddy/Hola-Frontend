@@ -45,7 +45,7 @@ function RequestCard({
 			.then(() => {
 				router.refresh();
 				toast({
-					description: "Friend request Sent",
+					description: "Request ignored",
 					duration: 3000,
 				});
 			})

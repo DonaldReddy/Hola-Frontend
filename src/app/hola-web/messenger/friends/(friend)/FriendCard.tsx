@@ -19,6 +19,8 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { unfriend } from "@/redux/slices/userSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { getFallBack } from "@/utils/main";
+import { selectChat } from "@/redux/slices/chatSlice";
+import { Chat } from "@/types";
 
 function FriendCard({
 	name,
@@ -32,6 +34,14 @@ function FriendCard({
 	const user = useAppSelector((s) => s.userReducer.user);
 
 	function navigateToChat() {
+		const chat: Chat = {
+			chatId: "new",
+			lastMessageAt: "",
+			chatType: "",
+			participants: [],
+			groupName: "",
+		};
+		dispatch(selectChat(chat));
 		router.replace("/hola-web/messenger");
 	}
 
