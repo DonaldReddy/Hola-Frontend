@@ -123,10 +123,6 @@ function OpenChat() {
 		}
 	}, [socket, selectedChat.chatId]);
 
-	useEffect(() => {
-		console.log(selectedChat.chatId);
-	}, [selectedChat]);
-
 	if (selectedChat?.participants.length == 0)
 		return (
 			<div className="flex md:w-[60%] lg:w-[70%] justify-center items-center">
