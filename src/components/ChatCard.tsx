@@ -5,12 +5,9 @@ import { MdGroups2 } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { selectChat } from "@/redux/slices/chatSlice";
 import { Chat } from "@/types";
+import MyAvatar from "./MyAvatar";
 
-type ChatCardProps = {
-	chat: Chat;
-};
-
-function ChatCard({ chat }: ChatCardProps) {
+function ChatCard({ chat, isSelected }: { chat: Chat; isSelected: boolean }) {
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((s) => s.userReducer.user);
 
@@ -20,14 +17,24 @@ function ChatCard({ chat }: ChatCardProps) {
 
 	return (
 		<div
-			className="h-20 mt-1 px-1 flex items-center justify-around  border-[1px] border-transparent-500 rounded-sm hover:bg-hover-primary-500"
+			className={`h-20 w-full mt-1 px-2 flex items-center gap-2 border-[1px] border-transparent-500 rounded-sm hover:bg-hover-primary-500 cursor-pointer ${
+				isSelected ? "bg-hover-primary-500" : ""
+			}`}
 			onClick={() => handleClick(chat)}
 		>
-			{chat.chatType == "private" ? (
-				<CgProfile size={40} />
-			) : (
-				<MdGroups2 size={40} />
-			)}
+			<div className="h-10 w-10">
+				{chat.chatType == "private" ? (
+					<MyAvatar
+						userName={
+							chat.chatType == "private"
+								? chat.participants.find((val) => val != user)!
+								: ""
+						}
+					/>
+				) : (
+					<MdGroups2 size={40} />
+				)}
+			</div>
 			<div className="flex w-[80%] justify-between items-center">
 				<div>
 					<h2>

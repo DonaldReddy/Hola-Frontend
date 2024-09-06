@@ -1,19 +1,12 @@
 "use client";
 import React from "react";
-import {
-	BsChatSquareTextFill,
-	BsFillPersonCheckFill,
-	BsFillPersonLinesFill,
-} from "react-icons/bs";
-import { CgProfile } from "react-icons/cg";
+import { BsChatSquareTextFill, BsFillPersonCheckFill } from "react-icons/bs";
 import { IoPersonAddSharp } from "react-icons/io5";
-import { FaUserCheck } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { sendFriendRequest } from "@/redux/slices/friendSlice";
 import { useToast } from "@/hooks/use-toast";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { getFallBack } from "@/utils/main";
+import MyAvatar from "@/components/MyAvatar";
 
 function PeopleCard({
 	name,
@@ -54,18 +47,7 @@ function PeopleCard({
 		>
 			<div className="flex items-center gap-2">
 				<div className="w-10 h-10 ">
-					<Avatar className="h-full w-full ">
-						<AvatarImage
-							src={`https://api.dicebear.com/9.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=${userName}&radius=50`}
-							className="h-full w-full "
-						/>
-						<AvatarFallback
-							delayMs={3000}
-							className="bg-primary h-full w-full flex justify-center items-center rounded-full"
-						>
-							{getFallBack(user)}
-						</AvatarFallback>
-					</Avatar>
+					<MyAvatar userName={userName} />
 				</div>
 				<div className="">
 					<h1 className="text-sm">{name}</h1>

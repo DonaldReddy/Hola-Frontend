@@ -50,11 +50,6 @@ export const getProfile = createAsyncThunk<
 		const { data } = await axios.get(
 			`${BASE_URL}/user/api/v1/user/get-profile?userName=${userName}`,
 		);
-		// return {
-		// 	name: data.name,
-		// 	userName: data.userName,
-		// 	numberOfFriends: data.numberOfFriends,
-		// };
 		return data.profile;
 	} catch (error: any) {
 		return thunkAPI.rejectWithValue(

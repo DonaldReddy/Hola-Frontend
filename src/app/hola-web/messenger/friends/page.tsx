@@ -5,7 +5,6 @@ import Friends from "./(friend)/Friends";
 import FriendRequest from "./(request)/FriendRequest";
 import People from "./(people)/People";
 import { Metadata } from "next";
-import { Search } from "lucide-react";
 
 export function generateMetadata(): Metadata {
 	return {

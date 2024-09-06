@@ -1,4 +1,5 @@
 "use client";
+import MyAvatar from "@/components/MyAvatar";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import {
@@ -7,8 +8,6 @@ import {
 	withdrawFriendRequest,
 } from "@/redux/slices/friendSlice";
 import { useAppDispatch } from "@/redux/store";
-import { getFallBack } from "@/utils/main";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -73,18 +72,7 @@ function RequestCard({
 		<div className="flex items-center justify-between p-2 pr-10 hover:bg-primary-700 border-b border-b-zinc-500 last:border-b-0">
 			<div className="flex  items-center gap-2">
 				<div className="w-10 h-10 ">
-					<Avatar className="h-full w-full ">
-						<AvatarImage
-							src={`https://api.dicebear.com/9.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=${userName}&radius=50`}
-							className="h-full w-full "
-						/>
-						<AvatarFallback
-							delayMs={3000}
-							className="bg-primary h-full w-full flex justify-center items-center rounded-full"
-						>
-							{getFallBack(userName)}
-						</AvatarFallback>
-					</Avatar>
+					<MyAvatar userName={userName} />
 				</div>
 				<div className="">
 					<h1 className="text-sm">{userName}</h1>

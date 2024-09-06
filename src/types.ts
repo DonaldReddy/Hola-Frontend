@@ -20,8 +20,8 @@ export type ReceivedFriendRequest = {
 
 export type Message = {
 	messageId: string;
-	sender: string;
-	receiver: string;
-	message: string;
-	timestamp: Date;
+	author: string;
+	chatId: string;
+	messageBody: string;
+	sentAt: string;
 };

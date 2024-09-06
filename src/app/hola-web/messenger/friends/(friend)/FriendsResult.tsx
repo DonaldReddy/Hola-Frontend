@@ -44,7 +44,7 @@ function Friends() {
 
 	return (
 		<div
-			className="h-[70svh] w-[90svw] overflow-y-scroll chat-card flex justify-center items-center"
+			className="h-[70svh] w-[90svw] overflow-y-scroll chat-card flex justify-center items-center scroll-smooth"
 			ref={containerRef}
 		>
 			{isLoading.friend ? (
@@ -56,11 +56,13 @@ function Friends() {
 							ref={(el) => {
 								cardRefs.current[index] = el;
 							}}
+							key={friend.userName}
 						>
 							<FriendCard
 								key={friend.userName}
 								friendUserName={friend.userName}
 								name={friend.name}
+								isSelected={index == selectedIndex}
 							/>
 						</div>
 					))}

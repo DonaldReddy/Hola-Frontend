@@ -1,10 +1,11 @@
+import { Message } from "@/types";
 import React from "react";
 
 function MessageCard({
-	msg,
+	message,
 	isUser,
 }: {
-	msg: { message: string; timestamp: string };
+	message: Message;
 	isUser: boolean;
 }) {
 	return (
@@ -14,9 +15,9 @@ function MessageCard({
 					isUser ? "bg-transparent-700" : "bg-primary-500"
 				}`}
 			>
-				{msg.message}
+				{message.messageBody}
 				<div className="text-[11px] text-right text-[#ffffff76]">
-					{msg.timestamp.split("T")[1].slice(0, -4)}
+					{message.sentAt.split("T")[1].slice(0, -4)}
 				</div>
 			</div>
 		</div>

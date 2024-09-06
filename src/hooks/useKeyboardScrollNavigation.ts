@@ -5,7 +5,6 @@ function useKeyboardScrollNavigation(array: any[]) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 	useEffect(() => {
-		setSelectedIndex(0);
 		function handleKeyDown(e: KeyboardEvent) {
 			if (e.key === "ArrowDown") {
 				setSelectedIndex((prevIndex) => {

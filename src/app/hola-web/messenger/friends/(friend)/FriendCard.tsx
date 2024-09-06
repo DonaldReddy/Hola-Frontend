@@ -17,56 +17,92 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { unfriend } from "@/redux/slices/userSlice";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { getFallBack } from "@/utils/main";
 import { selectChat } from "@/redux/slices/chatSlice";
 import { Chat } from "@/types";
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
+import MyAvatar from "@/components/MyAvatar";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 function FriendCard({
 	name,
 	friendUserName,
+	isSelected,
 }: {
 	name: string;
 	friendUserName: string;
+	isSelected: boolean;
 }) {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((s) => s.userReducer.user);
+	const { toast } = useToast();
 
-	function navigateToChat() {
-		const chat: Chat = {
-			chatId: "new",
-			lastMessageAt: "",
-			chatType: "",
-			participants: [],
-			groupName: "",
-		};
-		dispatch(selectChat(chat));
-		router.replace("/hola-web/messenger");
+	async function navigateToChat() {
+		try {
+			const url = new URL(`${BASE_URL}/chat/api/v1/chat/get-chat-between-two`);
+			url.searchParams.set("userName", user);
+			url.searchParams.set("friendUserName", friendUserName);
+			const { data } = await axios.get(url.toString());
+
+			if (data.chat) {
+				const chat: Chat = {
+					chatId: data.chat._id,
+					lastMessageAt: data.chat.updatedAt,
+					chatType: "private",
+					participants: data.chat.participants,
+					groupName: "",
+				};
+				dispatch(selectChat(chat));
+			} else {
+				const chat: Chat = {
+					chatId: "new",
+					lastMessageAt: "",
+					chatType: "private",
+					participants: [friendUserName, user],
+					groupName: "",
+				};
+				dispatch(selectChat(chat));
+			}
+			router.replace("/hola-web/messenger");
+		} catch (error) {
+			toast({
+				description: "Internal Error, Please try again",
+				variant: "destructive",
+				duration: 3000,
+			});
+		}
 	}
 
 	function handleUnFriend() {
 		dispatch(unfriend({ userName: user, friendUserName }))
 			.unwrap()
-			.then(() => router.refresh());
+			.then(() => {
+				router.refresh();
+				toast({
+					description: "Friend removed successfully.",
+					duration: 3000,
+				});
+			})
+			.catch(() => {
+				toast({
+					description: "Failed to remove friend. Please try again.",
+					variant: "destructive",
+					duration: 3000,
+				});
+			});
 	}
 
 	return (
-		<div className="flex items-center justify-between p-2 pr-10 hover:bg-primary-700 border-b border-b-zinc-500 last:border-b-0">
+		<div
+			className={`flex items-center justify-between p-2 pr-10 hover:bg-primary-700 border-b border-b-zinc-500 last:border-b-0 ${
+				isSelected ? "bg-primary-700" : ""
+			}`}
+		>
 			<div className="flex  items-center gap-2">
 				<div className="w-10 h-10 ">
-					<Avatar className="h-full w-full ">
-						<AvatarImage
-							src={`https://api.dicebear.com/9.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=${friendUserName}&radius=50`}
-							className="h-full w-full "
-						/>
-						<AvatarFallback
-							delayMs={3000}
-							className="bg-primary h-full w-full flex justify-center items-center rounded-full"
-						>
-							{getFallBack(user)}
-						</AvatarFallback>
-					</Avatar>
+					<MyAvatar userName={friendUserName} />
 				</div>
 				<div className="">
 					<h1 className="text-sm">{name}</h1>
@@ -78,12 +114,12 @@ function FriendCard({
 					onClick={navigateToChat}
 					className="bg-transparent hover:bg-purple-900 h-10"
 				>
-					<BsChatSquareTextFill size={20} />
+					<BsChatSquareTextFill size={20} title="send message" />
 				</Button>
 				<AlertDialog>
 					<AlertDialogTrigger asChild>
 						<Button className="bg-transparent hover:bg-red-800 h-10">
-							<IoPersonRemoveSharp size={20} />
+							<IoPersonRemoveSharp size={20} title="remove friend" />
 						</Button>
 					</AlertDialogTrigger>
 					<AlertDialogContent className="text-white bg-purple-950">
