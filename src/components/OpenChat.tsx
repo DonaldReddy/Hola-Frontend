@@ -112,7 +112,7 @@ function OpenChat() {
 	}, [conversationData, selectedChat]);
 
 	useEffect(() => {
-		if (socket) {
+		if (socket && selectedChat.chatId) {
 			socket.on("MESSAGE", (message: Message) => {
 				if (message.chatId === selectedChat.chatId)
 					setConversationData((prevData) => [...prevData, message]);
@@ -121,7 +121,11 @@ function OpenChat() {
 				socket.off("MESSAGE");
 			};
 		}
-	}, [socket]);
+	}, [socket, selectedChat.chatId]);
+
+	useEffect(() => {
+		console.log(selectedChat.chatId);
+	}, [selectedChat]);
 
 	if (selectedChat?.participants.length == 0)
 		return (
