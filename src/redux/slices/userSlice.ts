@@ -64,8 +64,12 @@ export const signInUser = createAsyncThunk<
 	{ rejectValue: string }
 >("user/signIn", async (signInInfo, thunkAPI) => {
 	try {
-		await axios.post(`${BASE_URL}/user/api/v1/user/sign-in`, signInInfo);
-		return signInInfo.userName;
+		const { data } = await axios.post(
+			`${BASE_URL}/user/api/v1/user/sign-in`,
+			signInInfo,
+		);
+		if (data.status) return signInInfo.userName;
+		return "";
 	} catch (error: any) {
 		return thunkAPI.rejectWithValue(
 			error?.response.data.error || "Sign-in failed",

@@ -27,16 +27,16 @@ function Init({ children }: { children: React.ReactNode }) {
 		return () => window.removeEventListener("resize", handleResize);
 	}, [dispatch, user]);
 
-	// useEffect(() => {
-	// 	if (user) {
-	// 		dispatch(validateSession(user))
-	// 			.unwrap()
-	// 			.then(() => {})
-	// 			.catch(() => {
-	// 				router.replace("/hola-web");
-	// 			});
-	// 	}
-	// }, [user, dispatch, router]);
+	useEffect(() => {
+		if (user) {
+			dispatch(validateSession(user))
+				.unwrap()
+				.then(() => {})
+				.catch(() => {
+					router.replace("/hola-web");
+				});
+		}
+	}, [user, dispatch, router]);
 
 	return <>{children}</>;
 }
