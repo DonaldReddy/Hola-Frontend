@@ -8,11 +8,13 @@ import { useRouter } from "next/navigation";
 import { FiLogOut } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { signOutUser } from "@/redux/slices/userSlice";
+import { useSocketIO } from "@/context/SocketIO/SocketIOContextProvider";
 
 function MessengerNavbar() {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.userReducer.user);
+	const socket = useSocketIO();
 
 	function navigateTo(path: string) {
 		router.push(path);
@@ -58,7 +60,9 @@ function MessengerNavbar() {
 					title="logout"
 					className=" cursor-pointer"
 					onClick={() => {
-						dispatch(signOutUser({ userName: user }));
+						dispatch(signOutUser({ userName: user }))
+							.unwrap()
+							.then(() => socket?.close());
 						navigateTo("/hola-web");
 					}}
 				/>
