@@ -75,7 +75,7 @@ export const getReceivedFriendRequests = createAsyncThunk<
 
 export const getSentFriendRequests = createAsyncThunk<
 	FriendRequest[],
-	{ user: string; signal: AbortSignal },
+	{ user: string; signal?: AbortSignal },
 	{ rejectValue: string }
 >("friend/getSentFriendRequests", async ({ user, signal }, thunkAPI) => {
 	try {

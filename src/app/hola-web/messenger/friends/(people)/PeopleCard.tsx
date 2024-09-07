@@ -4,7 +4,10 @@ import { BsChatSquareTextFill, BsFillPersonCheckFill } from "react-icons/bs";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { sendFriendRequest } from "@/redux/slices/friendSlice";
+import {
+	getSentFriendRequests,
+	sendFriendRequest,
+} from "@/redux/slices/friendSlice";
 import { useToast } from "@/hooks/use-toast";
 import MyAvatar from "@/components/MyAvatar";
 
@@ -28,6 +31,7 @@ function PeopleCard({
 		dispatch(sendFriendRequest({ userName: user, friendUserName: userName }))
 			.unwrap()
 			.then(() => {
+				dispatch(getSentFriendRequests({ user }));
 				toast({ description: "Friend request sent", duration: 3000 });
 			})
 			.catch((error) => {
