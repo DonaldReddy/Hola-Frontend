@@ -17,7 +17,7 @@ function ChatCard({ chat, isSelected }: { chat: Chat; isSelected: boolean }) {
 
 	return (
 		<div
-			className={`h-20 w-full mt-1 px-2 flex items-center gap-2 border-[1px] border-transparent-500 rounded-sm hover:bg-hover-primary-500 cursor-pointer ${
+			className={`h-20 w-full mt-1 px-2 flex items-center gap-2 border-y  border-transparent-500 hover:bg-hover-primary-500 cursor-pointer ${
 				isSelected ? "bg-hover-primary-500" : ""
 			}`}
 			onClick={() => handleClick(chat)}

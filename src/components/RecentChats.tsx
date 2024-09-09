@@ -43,7 +43,7 @@ function RecentChats() {
 			</div>
 
 			<div
-				className="h-[90%] w-full py-2 pl-2 overflow-y-scroll chat-card flex flex-col items-center"
+				className="h-[90%] w-full py-2 overflow-y-scroll chat-card flex flex-col items-center"
 				ref={containerRef}
 			>
 				{filteredChats.map((chat, index) => (

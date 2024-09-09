@@ -32,7 +32,7 @@ function OpenChat() {
 			const url = new URL(`${BASE_URL}/message/api/v1/message/get-messages`);
 			url.searchParams.set("chatId", selectedChat.chatId);
 			const { data } = await axios.get(url.toString());
-			setConversationData([...conversationData, ...data.messages]);
+			setConversationData([...data.messages]);
 		} catch (error) {}
 	}
 
@@ -57,7 +57,7 @@ function OpenChat() {
 								author: user,
 							},
 						);
-						setConversationData([...conversationData, data.message]);
+						setConversationData((prevData) => [...prevData, data.message]);
 					} catch (error) {
 						toast({
 							description: "Failed to send the message. Please try again.",
@@ -87,7 +87,7 @@ function OpenChat() {
 				toast({ description: data.error, variant: "destructive" });
 			} else {
 				dispatch(selectChat(data.chat));
-				setConversationData([...conversationData, data.message]);
+				setConversationData((prevData) => [...prevData, data.message]);
 				router.refresh();
 			}
 		} catch (error) {
