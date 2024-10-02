@@ -55,7 +55,7 @@ function PeopleResult() {
 	return (
 		<div
 			ref={containerRef}
-			className="h-[70svh] w-[90svw] overflow-y-scroll chat-card scroll-smooth "
+			className="h-[70svh] w-[90svw] overflow-y-scroll scroll-area scroll-smooth "
 		>
 			{isLoading ? (
 				<div className="flex justify-center items-center">

@@ -44,7 +44,7 @@ function Friends() {
 
 	return (
 		<div
-			className="h-[70svh] w-[90svw] overflow-y-scroll chat-card flex justify-center items-center scroll-smooth"
+			className="h-[70svh] w-[90svw] overflow-y-scroll scroll-area flex justify-center items-center scroll-smooth"
 			ref={containerRef}
 		>
 			{isLoading.friend ? (

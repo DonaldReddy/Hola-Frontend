@@ -40,7 +40,7 @@ function RequestReceived() {
 	}, [user, dispatch]);
 
 	return (
-		<div className="h-[70svh] w-[90svw] overflow-y-scroll chat-card flex justify-center items-center">
+		<div className="h-[70svh] w-[90svw] overflow-y-scroll scroll-area flex justify-center items-center">
 			{isLoading.requestReceived ? (
 				<AiOutlineLoading className="animate-spin" size={30} />
 			) : requests.length > 0 ? (

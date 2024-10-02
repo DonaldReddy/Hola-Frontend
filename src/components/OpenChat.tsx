@@ -7,9 +7,10 @@ import { Message } from "@/types";
 import axios from "axios";
 import { selectChat } from "@/redux/slices/chatSlice";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import MyAvatar from "./MyAvatar";
 import { useSocketIO } from "@/context/SocketIO/SocketIOContextProvider";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -22,18 +23,42 @@ function OpenChat() {
 	const [conversationData, setConversationData] = useState<Message[]>([]);
 	const dispatch = useAppDispatch();
 	const { toast } = useToast();
-	const router = useRouter();
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
-
+	const searchParams = useSearchParams();
+	const [page, setPage] = useState<number>(() => {
+		const paramPage = searchParams.get("page");
+		return paramPage ? Number(paramPage) : 1;
+	});
+	const [isLoading, setIsLoading] = useState(false);
 	const socket = useSocketIO();
+	const abortControllerRef = useRef<AbortController | null>(null);
+	const conversationDataRef = useRef(conversationData);
 
 	async function fetchMessages() {
 		try {
+			setIsLoading((prev) => true);
+
+			if (abortControllerRef.current) {
+				// Cancel the previous API call
+
+				abortControllerRef.current.abort();
+			}
+			const controller = new AbortController();
+			abortControllerRef.current = controller;
+			chatContainerRef.current!.style.overflowY = "hidden";
 			const url = new URL(`${BASE_URL}/message/api/v1/message/get-messages`);
 			url.searchParams.set("chatId", selectedChat.chatId);
-			const { data } = await axios.get(url.toString());
-			setConversationData([...data.messages]);
-		} catch (error) {}
+			url.searchParams.set("page", page.toString());
+			const { data } = await axios.get(url.toString(), {
+				signal: controller.signal,
+			});
+			abortControllerRef.current = null;
+			chatContainerRef.current!.style.overflowY = "scroll";
+			setConversationData((prevData) => [...data.messages, ...prevData]);
+			setIsLoading((prev) => false);
+		} catch (error) {
+			// console.error("Failed to fetch messages:", error);
+		}
 	}
 
 	async function handleSendMessage(
@@ -58,6 +83,7 @@ function OpenChat() {
 							},
 						);
 						setConversationData((prevData) => [...prevData, data.message]);
+						// scrollDown();
 					} catch (error) {
 						toast({
 							description: "Failed to send the message. Please try again.",
@@ -88,7 +114,7 @@ function OpenChat() {
 			} else {
 				dispatch(selectChat(data.chat));
 				setConversationData((prevData) => [...prevData, data.message]);
-				router.refresh();
+				// scrollDown();
 			}
 		} catch (error) {
 			toast({
@@ -99,29 +125,71 @@ function OpenChat() {
 	}
 
 	useEffect(() => {
+		conversationDataRef.current = conversationData;
+		if (chatContainerRef.current && page === 1) {
+			chatContainerRef.current.scrollTop =
+				chatContainerRef.current.scrollHeight;
+		} else if (chatContainerRef.current && page > 1) {
+			chatContainerRef.current.scrollTop = 5;
+		}
+	}, [conversationData]);
+
+	useEffect(() => {
+		// Fetch messages when chat is selected
 		if (selectedChat.chatId && selectedChat.chatId !== "new") {
 			fetchMessages();
 		}
-	}, [selectedChat.chatId]);
 
-	useEffect(() => {
-		if (chatContainerRef.current) {
-			chatContainerRef.current.scrollTop =
-				chatContainerRef.current.scrollHeight;
-		}
-	}, [conversationData, selectedChat]);
+		return () => {
+			// Clean up
+			setConversationData([]);
+			conversationDataRef.current = [];
+			abortControllerRef.current?.abort();
+			abortControllerRef.current = null;
+		};
+	}, [selectedChat.chatId]);
 
 	useEffect(() => {
 		if (socket && selectedChat.chatId) {
 			socket.on("MESSAGE", (message: Message) => {
-				if (message.chatId === selectedChat.chatId)
+				if (message.chatId === selectedChat.chatId) {
 					setConversationData((prevData) => [...prevData, message]);
+					conversationDataRef.current = [
+						...conversationDataRef.current,
+						message,
+					];
+				}
 			});
 			return () => {
 				socket.off("MESSAGE");
 			};
 		}
 	}, [socket, selectedChat.chatId]);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			if (
+				chatContainerRef.current?.scrollTop === 0 &&
+				conversationDataRef.current.length > 0
+			) {
+				setPage((prev) => prev + 1);
+			}
+		};
+
+		const chatContainer = chatContainerRef.current;
+		chatContainer?.addEventListener("scroll", handleScroll);
+
+		return () => {
+			chatContainer?.removeEventListener("scroll", handleScroll);
+			setPage(1); // Reset page on cleanup
+		};
+	}, [selectedChat.chatId]);
+
+	useEffect(() => {
+		if (selectedChat.chatId && selectedChat.chatId !== "new") {
+			fetchMessages();
+		}
+	}, [page]);
 
 	if (selectedChat?.participants.length == 0)
 		return (
@@ -162,9 +230,14 @@ function OpenChat() {
 			</div>
 
 			<div
-				className="h-[80%] w-full px-2 overflow-y-scroll chat-card "
+				className="h-[80%] w-full px-2 overflow-y-scroll scroll-area scroll-smooth"
 				ref={chatContainerRef}
 			>
+				{isLoading && (
+					<div className="flex justify-center items-center py-2">
+						<AiOutlineLoading size={30} className="animate-spin" />
+					</div>
+				)}
 				{conversationData.map((message, idx) => (
 					<MessageCard
 						key={message.messageId}

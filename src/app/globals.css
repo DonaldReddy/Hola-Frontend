@@ -87,13 +87,13 @@
 }
 
 
-.chat-card::-webkit-scrollbar {
+.scroll-area::-webkit-scrollbar {
   width: 5px;
   background: rgba(255, 255, 255, 0.253);
   border-radius: 20px;
 }
 
-.chat-card::-webkit-scrollbar-thumb {
+.scroll-area::-webkit-scrollbar-thumb {
   background: #430099;
   border-radius: 20px;
 }

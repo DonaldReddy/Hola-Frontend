@@ -1,10 +1,8 @@
 "use client";
-import React from "react";
-import { CgProfile } from "react-icons/cg";
-import { MdGroups2 } from "react-icons/md";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { selectChat } from "@/redux/slices/chatSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { Chat } from "@/types";
+import { MdGroups2 } from "react-icons/md";
 import MyAvatar from "./MyAvatar";
 
 function ChatCard({ chat, isSelected }: { chat: Chat; isSelected: boolean }) {
