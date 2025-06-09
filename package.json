@@ -6,7 +6,7 @@
 		"dev": "npm run open-browser && next dev -p 5173",
 		"open-browser": "start http://localhost:5173",
 		"build": "next build",
-		"start": "next start",
+		"start": "npm run open-browser && next start -p 5173",
 		"lint": "next lint"
 	},
 	"dependencies": {
